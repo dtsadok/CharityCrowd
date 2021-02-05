@@ -20,7 +20,7 @@
         <tbody>
         {% for nomination in nominations %}
             <tr>
-                <td>{{ nomination.name }}</td>
+                <td class="name">{{ nomination.name }}</td>
                 <td>{{ nomination.pitch }}</td>
                 <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ nomination.updatedAt ? nomination.updatedAt|date('Y-m-d H:i:s') : '' }}</td>

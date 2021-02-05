@@ -15,6 +15,19 @@ class NominationControllerTest extends WebTestCase
     //when I vote No on a nomination
     //it should show on the page
 
+    public function testListNominationsWithVoteCounts()
+    {
+        $client = static::createClient();
+        $listPage = $client->request('GET', '/nominations/charities');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
+
+        $this->assertSelectorTextContains('#nominations .vote-yes', '1');
+        $this->assertSelectorTextContains('#nominations .vote-no', '1');
+    }
+
     public function testListPageVoteYes()
     {
         $client = static::createClient();
@@ -23,10 +36,10 @@ class NominationControllerTest extends WebTestCase
 
         //$mech->submit_form_ok({form_name => 'form-1-yes'});
 
-        $listPage->filter('#nominations:first-child');
+        $listPage->filter('#nominations tbody:first-child td');
         $form = $listPage->selectButton('vote-yes')->form();
         $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charity');
+        $this->assertResponseRedirects('/nominations/charities');
     }
     public function testListPageVoteNo()
     {
@@ -39,7 +52,7 @@ class NominationControllerTest extends WebTestCase
         $listPage->filter('#nominations:first-child');
         $form = $listPage->selectButton('vote-no')->form();
         $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charity');
+        $this->assertResponseRedirects('/nominations/charities');
     }
     public function testNominateCharity()
     {
