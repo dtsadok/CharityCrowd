@@ -14,9 +14,6 @@ class NominationType extends AbstractType
         $builder
             ->add('name')
             ->add('pitch')
-            ->add('created_at')
-            ->add('updated_at')
-            ->add('member_id')
         ;
     }
 

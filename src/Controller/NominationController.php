@@ -28,7 +28,11 @@ class NominationController extends AbstractController
     public function new(Request $request): Response
     {
         $nomination = new Nomination();
-        $form = $this->createForm(NominationType::class, $nomination);
+        $now = new \DateTimeImmutable();
+	$nomination->setCreatedAt($now);
+	$nomination->setUpdatedAt($now);
+
+	$form = $this->createForm(NominationType::class, $nomination);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -45,7 +45,7 @@ class Member
     private $updated_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Nomination::class, mappedBy="member_id")
+     * @ORM\OneToMany(targetEntity=Nomination::class, mappedBy="member")
      */
     private $nominations;
 

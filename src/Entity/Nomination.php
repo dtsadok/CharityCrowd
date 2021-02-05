@@ -28,7 +28,7 @@ class Nomination
      * @ORM\ManyToOne(targetEntity=Member::class, inversedBy="nominations")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $member_id;
+    private $member;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -72,14 +72,14 @@ class Nomination
         return $this;
     }
 
-    public function getMemberId(): ?Member
+    public function getMember(): ?Member
     {
-        return $this->member_id;
+        return $this->member;
     }
 
-    public function setMemberId(?Member $member_id): self
+    public function setMember(?Member $member): self
     {
-        $this->member_id = $member_id;
+        $this->member = $member;
 
         return $this;
     }

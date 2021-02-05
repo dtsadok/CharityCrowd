@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nomination index{% endblock %}
+{% block title %}Nominations{% endblock %}
 
 {% block body %}
-    <h1>Nomination index</h1>
+    <h1>Nominations</h1>
 
-    <table class="table">
+    <a class="nominate" href="{{ path('nomination_new') }}">Nominate Additional Charity</a>
+
+    <table id="nominations" class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Pitch</th>
                 <th>Created_at</th>
@@ -19,7 +20,6 @@
         <tbody>
         {% for nomination in nominations %}
             <tr>
-                <td>{{ nomination.id }}</td>
                 <td>{{ nomination.name }}</td>
                 <td>{{ nomination.pitch }}</td>
                 <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -36,6 +36,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('nomination_new') }}">Create new</a>
 {% endblock %}

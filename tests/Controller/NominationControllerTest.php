@@ -49,8 +49,8 @@ class NominationControllerTest extends WebTestCase
 
 	$form = $nominatePage->selectButton('nominate')->form();
 	$listPage = $client->submit($form, [
-	  'name' => 'Foo Bar',
-	  'pitch' => 'This is a great charity!',
+	  'nomination[name]' => 'Foo Bar',
+	  'nomination[pitch]' => 'This is a great charity!',
 	]);
 	$this->assertResponseRedirects('/nominations/charity');
 
