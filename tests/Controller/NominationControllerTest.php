@@ -19,41 +19,41 @@ class NominationControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $listPage = $client->request('GET', '/nominations/charities');
-	$this->assertResponseIsSuccessful();
+        $this->assertResponseIsSuccessful();
 
         //$mech->submit_form_ok({form_name => 'form-1-yes'});
 
-	$listPage->filter('#nominations:first-child');
-	$form = $listPage->selectButton('vote-yes')->form();
-	$client->submit($form);
-	$this->assertResponseRedirects('/nominations/charity');
+        $listPage->filter('#nominations:first-child');
+        $form = $listPage->selectButton('vote-yes')->form();
+        $client->submit($form);
+        $this->assertResponseRedirects('/nominations/charity');
     }
     public function testListPageVoteNo()
     {
-	$client = static::createClient();
-	$listPage = $client->request('GET', '/nominations/charities');
-	$this->assertResponseIsSuccessful();
+        $client = static::createClient();
+        $listPage = $client->request('GET', '/nominations/charities');
+        $this->assertResponseIsSuccessful();
 
-	//$mech->submit_form_ok({form_name => 'form-1-no'});
+        //$mech->submit_form_ok({form_name => 'form-1-no'});
 
-	$listPage->filter('#nominations:first-child');
-	$form = $listPage->selectButton('vote-no')->form();
-	$client->submit($form);
-	$this->assertResponseRedirects('/nominations/charity');
+        $listPage->filter('#nominations:first-child');
+        $form = $listPage->selectButton('vote-no')->form();
+        $client->submit($form);
+        $this->assertResponseRedirects('/nominations/charity');
     }
     public function testNominateCharity()
     {
         $client = static::createClient();
         $nominatePage = $client->request('GET', '/nominate/charity');
-	$this->assertResponseIsSuccessful();
+        $this->assertResponseIsSuccessful();
 
-	$form = $nominatePage->selectButton('nominate')->form();
-	$listPage = $client->submit($form, [
-	  'nomination[name]' => 'Foo Bar',
-	  'nomination[pitch]' => 'This is a great charity!',
-	]);
-	$this->assertResponseRedirects('/nominations/charity');
+        $form = $nominatePage->selectButton('nominate')->form();
+        $listPage = $client->submit($form, [
+            'nomination[name]' => 'Foo Bar',
+            'nomination[pitch]' => 'This is a great charity!',
+        ]);
+        $this->assertResponseRedirects('/nominations/charities');
 
-	$this->assertSelectorTextContains('#nominations .name', 'Foo Bar');
+        $this->assertSelectorTextContains('#nominations .name', 'Foo Bar');
     }
 }
