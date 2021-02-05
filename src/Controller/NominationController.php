@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Member;
 use App\Entity\Nomination;
 use App\Form\NominationType;
 use App\Repository\NominationRepository;
@@ -27,12 +28,16 @@ class NominationController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $nomination = new Nomination();
-        $now = new \DateTimeImmutable();
-	$nomination->setCreatedAt($now);
-	$nomination->setUpdatedAt($now);
+        //TODO: Replace with logged-in user
+        $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
 
-	$form = $this->createForm(NominationType::class, $nomination);
+        $nomination = new Nomination();
+        $nomination->setMember($member);
+        $now = new \DateTimeImmutable();
+        $nomination->setCreatedAt($now);
+        $nomination->setUpdatedAt($now);
+
+        $form = $this->createForm(NominationType::class, $nomination);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
