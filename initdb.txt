@@ -1,0 +1,7 @@
+$ sudo su - postgres
+$ createdb charitycrowd
+$ createdb charitycrowd_test
+$ psql
+postgres=# CREATE USER charitycrowd WITH PASSWORD 'charitycrowd';
+postgres=# GRANT ALL PRIVILEGES ON DATABASE charitycrowd to charitycrowd;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE charitycrowd_test to charitycrowd;

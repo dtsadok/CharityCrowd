@@ -1,0 +1,20 @@
+* In progress
++ Completed
+
+On the nominations page:
+* I can see the list of current nominations
+* I can vote Yes on a nomination
+* I can vote No on a nomination
+* I can go to the Nominate page
+I can see the total current monthly allocation.
+I can see the current monthly allocation for each nomination.
+I can see how many votes each nomination has received
+I can see how many votes I have left for the month
+I can see the nominations I've voted on
+
+On the nominate page:
+* I can nominate a new charity
+
+On the charities page:
+I can browse through the list of charities
+I can nominate a charity
