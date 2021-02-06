@@ -24,8 +24,21 @@ class NominationControllerTest extends WebTestCase
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
 
-        $this->assertSelectorTextContains('#nominations .vote-yes', '1');
-        $this->assertSelectorTextContains('#nominations .vote-no', '1');
+        //see src/DataFixtures/VoteFixtures.php for vote counts
+        $listPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
+        $form = $listPage->selectButton('1');
+        $listPage->filter('#nominations tbody tr:nth-child(1) td.no-votes');
+        $form = $listPage->selectButton('1');
+
+        $listPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
+        $form = $listPage->selectButton('4');
+        $listPage->filter('#nominations tbody tr:nth-child(2) td.no-votes');
+        $form = $listPage->selectButton('0');
+
+        $listPage->filter('#nominations tbody tr:nth-child(3) td.yes-votes');
+        $form = $listPage->selectButton('2');
+        $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
+        $form = $listPage->selectButton('1');
     }
 
     public function testListPageVoteYes()
@@ -36,7 +49,7 @@ class NominationControllerTest extends WebTestCase
 
         //$mech->submit_form_ok({form_name => 'form-1-yes'});
 
-        $listPage->filter('#nominations tbody:first-child td');
+        $listPage->filter('#nominations tbody tr:first-child');
         $form = $listPage->selectButton('vote-yes')->form();
         $client->submit($form);
         $this->assertResponseRedirects('/nominations/charities');
@@ -49,7 +62,7 @@ class NominationControllerTest extends WebTestCase
 
         //$mech->submit_form_ok({form_name => 'form-1-no'});
 
-        $listPage->filter('#nominations:first-child');
+        $listPage->filter('#nominations tbody tr:first-child');
         $form = $listPage->selectButton('vote-no')->form();
         $client->submit($form);
         $this->assertResponseRedirects('/nominations/charities');

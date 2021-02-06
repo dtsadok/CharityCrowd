@@ -10,8 +10,6 @@ class VoteFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $now = new \DateTimeImmutable();
-
         $votes_by_nomination = Array(
             "nomination-1" => Array(
                 "member-2" => "N",
@@ -37,10 +35,12 @@ class VoteFixtures extends Fixture
             foreach ($votes as $member_name => $value)
             {
                 $vote = new Vote();
+
                 $member = $this->getReference($member_name);
                 $vote->setMember($member);
                 $vote->setNomination($nomination);
                 $vote->setValue($value);
+                $now = new \DateTimeImmutable();
                 $vote->setCreatedAt($now);
                 $manager->persist($vote);
             }

@@ -2,7 +2,7 @@
 + Completed
 
 On the nominations page:
-* I can see the list of current nominations
+* I can see the list of current nominations with vote counts
 * I can vote Yes on a nomination
 * I can vote No on a nomination
 * I can go to the Nominate page

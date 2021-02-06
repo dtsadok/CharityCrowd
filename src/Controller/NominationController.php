@@ -18,8 +18,35 @@ class NominationController extends AbstractController
      */
     public function index(NominationRepository $nominationRepository): Response
     {
+        $nominations = $nominationRepository->findAllWithVotes();
+dump($nominations);
+
+        $nominationsMerged = Array();
+        foreach ($nominations as $nomination)
+        {
+            $id = $nomination[0]['id'];
+            if (!array_key_exists($id, $nominationsMerged))
+            {
+                $nominationsMerged[$id] = $nomination;
+                $nominationsMerged[$id]['yes_votes'] = 0;
+                $nominationsMerged[$id]['no_votes'] = 0;
+            }
+
+            if ($nomination['value'] == 'Y')
+            {
+                $nominationsMerged[$id]['yes_votes'] = $nomination['vote_count'];
+            }
+            else if ($nomination['value'] == 'N')
+            {
+                $nominationsMerged[$id]['no_votes'] = $nomination['vote_count'];
+            }
+        }
+
+        //forms for voting
+        //$form = $this->createForm(NominationType::class, $nomination);
+
         return $this->render('nomination/index.html.twig', [
-            'nominations' => $nominationRepository->findAll(),
+            'nominations' => $nominationsMerged
         ]);
     }
 

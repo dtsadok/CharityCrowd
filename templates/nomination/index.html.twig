@@ -13,20 +13,26 @@
                 <th>Name</th>
                 <th>Pitch</th>
                 <th>Created_at</th>
-                <th>Updated_at</th>
+                <th>YES</th>
+                <th>NO</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for nomination in nominations %}
             <tr>
-                <td class="name">{{ nomination.name }}</td>
-                <td>{{ nomination.pitch }}</td>
-                <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ nomination.updatedAt ? nomination.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="name">{{ nomination.0.name }}</td>
+                <td>{{ nomination.0.pitch }}</td>
+                <td>{{ nomination.0.created_at ? nomination.0.created_at|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="yes_votes">
+                    {{ nomination.yes_votes }}
+                </td>
+                <td class="no_votes">
+                    {{ nomination.no_votes }}
+                </td>
                 <td>
-                    <a href="{{ path('nomination_show', {'id': nomination.id}) }}">show</a>
-                    <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
+                    <a href="{{ path('nomination_show', {'id': nomination.0.id}) }}">show</a>
+                    <a href="{{ path('nomination_edit', {'id': nomination.0.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
