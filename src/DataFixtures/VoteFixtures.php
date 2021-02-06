@@ -10,46 +10,41 @@ class VoteFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $member1 = $this->getReference("member-1");
-        $member2 = $this->getReference("member-2");
-        $member3 = $this->getReference("member-3");
-        $member4 = $this->getReference("member-4");
-        $nomination1 = $this->getReference("nomination-1");
-        $nomination2 = $this->getReference("nomination-2");
-        $nomination3 = $this->getReference("nomination-3");
         $now = new \DateTimeImmutable();
 
-        $vote = new Vote();
-        $vote->setMember($member1);
-        $vote->setNomination($nomination2);
-        $vote->setValue('Y');
-        $vote->setCreatedAt($now);
-        $vote->setUpdatedAt($now);
-        $manager->persist($vote);
+        $votes_by_nomination = Array(
+            "nomination-1" => Array(
+                "member-2" => "N",
+                "member-3" => "Y",
+            ),
+            "nomination-2" => Array(
+                "member-1" => "Y",
+                "member-2" => "Y",
+                "member-3" => "Y",
+                "member-4" => "Y",
+            ),
+            "nomination-3" => Array(
+                "member-1" => "Y",
+                "member-3" => "Y",
+                "member-4" => "N",
+            ),
+        );
 
-        $vote = new Vote();
-        $vote->setMember($member1);
-        $vote->setNomination($nomination3);
-        $vote->setValue('Y');
-        $vote->setCreatedAt($now);
-        $vote->setUpdatedAt($now);
-        $manager->persist($vote);
+        foreach ($votes_by_nomination as $nomination_name => $votes)
+        {
+            $nomination = $this->getReference($nomination_name);
 
-        $vote = new Vote();
-        $vote->setMember($member2);
-        $vote->setNomination($nomination1);
-        $vote->setValue('N');
-        $vote->setCreatedAt($now);
-        $vote->setUpdatedAt($now);
-        $manager->persist($vote);
-
-        $vote = new Vote();
-        $vote->setMember($member3);
-        $vote->setNomination($nomination1);
-        $vote->setValue('Y');
-        $vote->setCreatedAt($now);
-        $vote->setUpdatedAt($now);
-        $manager->persist($vote);
+            foreach ($votes as $member_name => $value)
+            {
+                $vote = new Vote();
+                $member = $this->getReference($member_name);
+                $vote->setMember($member);
+                $vote->setNomination($nomination);
+                $vote->setValue($value);
+                $vote->setCreatedAt($now);
+                $manager->persist($vote);
+            }
+        }
 
         $manager->flush();
     }
