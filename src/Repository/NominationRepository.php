@@ -30,7 +30,7 @@ class NominationRepository extends ServiceEntityRepository
              GROUP BY nom.id, v.value"
         );
 
-        return $query->getArrayResult();
+        return $query->getResult();
     }
 
     // /**
