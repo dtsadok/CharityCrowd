@@ -1,0 +1,7 @@
+{{ form_start(nomination.vote_no_button) }}
+    {{ form_errors(nomination.vote_no_button) }}
+
+    {{ form_row(nomination.vote_no_button.nomination_id) }}
+
+    <input type="submit" class="vote-no btn" value="{{ button_label|default(nomination.no_votes) }}" />
+{{ form_end(nomination.vote_no_button) }}

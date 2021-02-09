@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Member;
 use App\Entity\Nomination;
+use App\Entity\VoteCollection;
 use App\Form\NominationType;
+use App\Form\VoteButtonType;
 use App\Repository\NominationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +29,7 @@ dump($nominations);
             $id = $nomination[0]['id'];
             if (!array_key_exists($id, $nominationsMerged))
             {
-                $nominationsMerged[$id] = $nomination;
+                $nominationsMerged[$id] = $nomination[0];
                 $nominationsMerged[$id]['yes_votes'] = 0;
                 $nominationsMerged[$id]['no_votes'] = 0;
             }
@@ -40,10 +42,20 @@ dump($nominations);
             {
                 $nominationsMerged[$id]['no_votes'] = $nomination['vote_count'];
             }
-        }
 
-        //forms for voting
-        //$form = $this->createForm(NominationType::class, $nomination);
+            //forms for voting
+            $yesVoteCollection = new VoteCollection($id, 'Y', $nominationsMerged[$id]['yes_votes']);
+            $voteYesButton = $this->createForm(VoteButtonType::class, $yesVoteCollection, [
+                //'action' => $this->generateUrl('vote')
+            ]);
+            $nominationsMerged[$id]['vote_yes_button'] = $voteYesButton->createView();
+            $noVoteCollection = new VoteCollection($id, 'Y', $nominationsMerged[$id]['no_votes']);
+            $voteNoButton = $this->createForm(VoteButtonType::class, $noVoteCollection, [
+                //'action' => $this->generateUrl('vote')
+            ]);
+            $nominationsMerged[$id]['vote_no_button'] = $voteNoButton->createView();
+
+        }
 
         return $this->render('nomination/index.html.twig', [
             'nominations' => $nominationsMerged

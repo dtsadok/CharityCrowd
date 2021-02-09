@@ -49,8 +49,8 @@ class NominationControllerTest extends WebTestCase
 
         //$mech->submit_form_ok({form_name => 'form-1-yes'});
 
-        $listPage->filter('#nominations tbody tr:first-child');
-        $form = $listPage->selectButton('vote-yes')->form();
+        $listPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
+        $form = $listPage->selectButton('1')->form();
         $client->submit($form);
         $this->assertResponseRedirects('/nominations/charities');
     }
@@ -62,8 +62,8 @@ class NominationControllerTest extends WebTestCase
 
         //$mech->submit_form_ok({form_name => 'form-1-no'});
 
-        $listPage->filter('#nominations tbody tr:first-child');
-        $form = $listPage->selectButton('vote-no')->form();
+        $listPage->filter('#nominations tbody tr:nth-child(1) td.no-votes');
+        $form = $listPage->selectButton('1')->form();
         $client->submit($form);
         $this->assertResponseRedirects('/nominations/charities');
     }
