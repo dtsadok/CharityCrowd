@@ -1,7 +1,7 @@
-{{ form_start(nomination.vote_yes_button) }}
-    {{ form_errors(nomination.vote_yes_button) }}
+{{ form_start(nomination.vote.yes) }}
+    {{ form_errors(nomination.vote.yes) }}
 
-    {{ form_row(nomination.vote_yes_button.nomination_id) }}
+    {{ form_row(nomination.vote.yes.nomination) }}
 
     <input type="submit" class="vote-yes btn" value="{{ button_label|default(nomination.yes_votes) }}" />
-{{ form_end(nomination.vote_yes_button) }}
+{{ form_end(nomination.vote.yes) }}
