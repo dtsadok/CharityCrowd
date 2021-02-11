@@ -12,11 +12,17 @@ class NominationFixtures extends Fixture
     {
         $member = $this->getReference("member-1");
 
+        $voteCounts = ["Foo" => ["Y" => 1, "N" => 1], "Bar" => ["Y" => 3, "N" => 1], "Baz" => ["Y" => 0, "N" => 3]];
+
         foreach (["Foo", "Bar", "Baz"] as $idx => $name) {
             $i = $idx + 1;
             $nomination = new Nomination();
             $nomination->setMember($member);
             $nomination->setName($name);
+
+            $nomination->setYesCount($voteCounts[$name]["Y"]);
+            $nomination->setNoCount($voteCounts[$name]["N"]);
+
             $now = new \DateTimeImmutable();
             $nomination->setCreatedAt($now);
             $nomination->setUpdatedAt($now);

@@ -50,6 +50,16 @@ class Nomination
      */
     private $votes;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $yes_count;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $no_count;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -146,6 +156,30 @@ class Nomination
                 $vote->setNomination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getYesCount(): ?int
+    {
+        return $this->yes_count;
+    }
+
+    public function setYesCount(int $yes_count): self
+    {
+        $this->yes_count = $yes_count;
+
+        return $this;
+    }
+
+    public function getNoCount(): ?int
+    {
+        return $this->no_count;
+    }
+
+    public function setNoCount(int $no_count): self
+    {
+        $this->no_count = $no_count;
 
         return $this;
     }

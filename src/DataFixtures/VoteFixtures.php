@@ -16,14 +16,13 @@ class VoteFixtures extends Fixture
                 "member-3" => "Y",
             ),
             "nomination-2" => Array(
-                "member-1" => "Y",
                 "member-2" => "Y",
                 "member-3" => "Y",
                 "member-4" => "Y",
             ),
             "nomination-3" => Array(
-                "member-1" => "Y",
-                "member-3" => "Y",
+                "member-2" => "N",
+                "member-3" => "N",
                 "member-4" => "N",
             ),
         );

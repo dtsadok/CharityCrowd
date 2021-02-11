@@ -19,22 +19,35 @@ class VoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vote::class);
     }
 
-    // /**
-    //  * @return Vote[] Returns an array of Vote objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     ///**
+    //* @return Vote[] Returns an array of Vote objects
+    //*/
+    public function countYesVotesByNomination($nomination)
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('COUNT(v.value) as count')
+            ->andWhere('v.value = \'Y\'')
+            ->andWhere('v.nomination = :nom')
+            ->setParameter('nom', $nomination)
             ->getQuery()
-            ->getResult()
+            ->getScalarResult()
         ;
     }
-    */
+
+   ///**
+    //* @return Vote[] Returns an array of Vote objects
+    //*/
+    public function countNoVotesByNomination($nomination)
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COUNT(v.value) as count')
+            ->andWhere('v.value = \'N\'')
+            ->andWhere('v.nomination = :nom')
+            ->setParameter('nom', $nomination)
+            ->getQuery()
+            ->getScalarResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Vote

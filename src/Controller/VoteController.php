@@ -19,7 +19,7 @@ class VoteController extends AbstractController
     /**
      * @Route("/", name="vote_new", methods={"POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, VoteRepository $voteRepository): Response
     {
         //TODO: Replace with logged-in user
         $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
@@ -33,10 +33,27 @@ class VoteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($vote);
-            $entityManager->flush();
+            try {
+                $entityManager->getConnection()->beginTransaction();
 
-            return $this->redirectToRoute('nomination_index');
+                $entityManager->persist($vote);
+                $entityManager->flush();
+
+                $yesCount = $voteRepository->countYesVotesByNomination($vote->getNomination());
+                $vote->getNomination()->setYesCount(intval($yesCount[0]["count"]));
+                $noCount = $voteRepository->countNoVotesByNomination($vote->getNomination());
+                $vote->getNomination()->setNoCount(intval($noCount[0]["count"]));
+
+                $entityManager->persist($vote->getNomination());
+                $entityManager->flush();
+
+                $entityManager->getConnection()->commit();
+
+                return $this->redirectToRoute('nomination_index');
+            } catch (UniqueConstraintViolationException $e) {
+                //TODO: 401(?) error code
+                return $this->response("<h1>Already voted!</h1>");
+            }
         }
 
         return $this->render('vote/new.html.twig', [
@@ -56,6 +73,7 @@ class VoteController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('vote_index');
+        //return $this->redirectToRoute('vote_index');
+        return $this->response("<h1>deleted</h1>");
     }
 }

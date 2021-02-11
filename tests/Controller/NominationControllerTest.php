@@ -31,14 +31,14 @@ class NominationControllerTest extends WebTestCase
         $form = $listPage->selectButton('1');
 
         $listPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
-        $form = $listPage->selectButton('4');
+        $form = $listPage->selectButton('3');
         $listPage->filter('#nominations tbody tr:nth-child(2) td.no-votes');
-        $form = $listPage->selectButton('0');
+        $form = $listPage->selectButton('1');
 
         $listPage->filter('#nominations tbody tr:nth-child(3) td.yes-votes');
-        $form = $listPage->selectButton('2');
-        $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
         $form = $listPage->selectButton('1');
+        $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
+        $form = $listPage->selectButton('2');
     }
 
     public function testListPageVoteYes()
