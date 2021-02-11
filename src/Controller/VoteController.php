@@ -6,6 +6,7 @@ use App\Entity\Member;
 use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\VoteRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +53,7 @@ class VoteController extends AbstractController
                 return $this->redirectToRoute('nomination_index');
             } catch (UniqueConstraintViolationException $e) {
                 //TODO: 401(?) error code
-                return $this->response("<h1>Already voted!</h1>");
+                return new Response("<h1>Already voted!</h1>");
             }
         }
 
