@@ -23,7 +23,7 @@ class NominationController extends AbstractController
         //TODO: Replace with logged-in user
         $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
 
-        $nominations = $nominationRepository->findAll();
+        $nominations = $nominationRepository->findAllWithVotesFor($member);
 
 dump($nominations);
 
@@ -32,15 +32,15 @@ dump($nominations);
 
         foreach ($nominations as $nomination)
         {
-            $id = $nomination->getId();
+            $id = $nomination[0]->getId();
             $yesVote = new Vote();
-            $yesVote->setMember($member)->setNomination($nomination)->setValue('Y');
+            $yesVote->setMember($member)->setNomination($nomination[0])->setValue('Y');
             $voteYesButton = $this->createForm(VoteType::class, $yesVote,
                 ['action' => $this->generateUrl('vote_new')]
             );
             $voteForms[$id]['yes'] = $voteYesButton->createView();
             $noVote = new Vote();
-            $noVote->setMember($member)->setNomination($nomination)->setValue('N');
+            $noVote->setMember($member)->setNomination($nomination[0])->setValue('N');
             $voteNoButton = $this->createForm(VoteType::class, $noVote,
                 ['action' => $this->generateUrl('vote_new')]
             );

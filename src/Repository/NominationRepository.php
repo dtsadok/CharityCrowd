@@ -19,18 +19,21 @@ class NominationRepository extends ServiceEntityRepository
         parent::__construct($registry, Nomination::class);
     }
 
-    public function findAllWithVotes()
+    public function findAllWithVotesFor($member)
     {
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            "SELECT nom, v.value AS value, COUNT(v.value) AS vote_count
+            "SELECT nom, v.value AS vote
              FROM App\Entity\Nomination nom
              LEFT JOIN nom.votes v
+             WITH v.member = :m
              GROUP BY nom.id, v.value"
         );
 
-        return $query->getResult();
+        return $query
+            ->setParameter('m', $member)
+            ->getResult();
     }
 
     // /**

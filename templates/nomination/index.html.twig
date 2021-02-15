@@ -21,9 +21,9 @@
         <tbody>
         {% for nomination in nominations %}
             <tr>
-                <td class="name">{{ nomination.name }}</td>
-                <td>{{ nomination.pitch }}</td>
-                <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="name">{{ nomination.0.name }}</td>
+                <td>{{ nomination.0.pitch }}</td>
+                <td>{{ nomination.0.createdAt ? nomination.0.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="yes_votes">
                     {{ include('nomination/_vote_yes_button.html.twig') }}
                 </td>
@@ -31,8 +31,8 @@
                     {{ include('nomination/_vote_no_button.html.twig') }}
                 </td>
                 <td>
-                    <a href="{{ path('nomination_show', {'id': nomination.id}) }}">show</a>
-                    <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
+                    <a href="{{ path('nomination_show', {'id': nomination.0.id}) }}">show</a>
+                    <a href="{{ path('nomination_edit', {'id': nomination.0.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
