@@ -28,7 +28,8 @@ class NominationRepository extends ServiceEntityRepository
              FROM App\Entity\Nomination nom
              LEFT JOIN nom.votes v
              WITH v.member = :m
-             GROUP BY nom.id, v.value"
+             GROUP BY nom.id, v.value
+             ORDER BY nom.id ASC"
         );
 
         return $query
