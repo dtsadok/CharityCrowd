@@ -3,5 +3,5 @@
 
     {{ form_row(voteForms[nomination.0.id].no.nomination) }}
 
-    <input type="submit" class="vote-no btn" value="{{ button_label|default(nomination.0.noCount) }}" />
+    <input type="submit" id="vote-{{nomination.0.id}}-no" class="vote-no btn" value="{{ button_label|default(nomination.0.noCount) }}" />
 {{ form_end(voteForms[nomination.0.id].no) }}
