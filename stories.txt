@@ -19,3 +19,7 @@ On the nominate page:
 On the charities page:
 I can browse through the list of charities
 I can nominate a charity
+
+On the members page:
+I can sign up
+I can log in
