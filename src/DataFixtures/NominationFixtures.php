@@ -12,7 +12,7 @@ class NominationFixtures extends Fixture
     {
         $member = $this->getReference("member-1");
 
-        $voteCounts = ["Foo" => ["Y" => 1, "N" => 1], "Bar" => ["Y" => 3, "N" => 1], "Baz" => ["Y" => 0, "N" => 3]];
+        $voteCounts = ["Foo" => ["Y" => 1, "N" => 1], "Bar" => ["Y" => 4, "N" => 0], "Baz" => ["Y" => 0, "N" => 4]];
 
         foreach (["Foo", "Bar", "Baz"] as $idx => $name) {
             $i = $idx + 1;

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Vote;
 use App\Repository\NominationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -180,6 +181,17 @@ class Nomination
     public function setNoCount(int $no_count): self
     {
         $this->no_count = $no_count;
+
+        return $this;
+    }
+
+    public function setVoteCounts($voteRepository): self
+    {
+        $yesCount = $voteRepository->countYesVotesByNomination($this);
+        $this->setYesCount(intval($yesCount[0]["count"]));
+
+        $noCount = $voteRepository->countNoVotesByNomination($this);
+        $this->setNoCount(intval($noCount[0]["count"]));
 
         return $this;
     }

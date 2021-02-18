@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Member;
+use App\Entity\Nomination;
 use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\VoteRepository;
@@ -24,43 +25,65 @@ class VoteController extends AbstractController
     {
         //TODO: Replace with logged-in user
         $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
+        //dump("VoteController - logged in as:" . $member->getNickname());
 
-        $vote = new Vote();
-        $vote->setMember($member);
-        $now = new \DateTimeImmutable();
-        $vote->setCreatedAt($now);
-        $form = $this->createForm(VoteType::class, $vote);
-        $form->handleRequest($request);
+        $voteInfo = $request->request->get('vote');
+        $nomination = $this->getDoctrine()->getRepository(Nomination::class)->findOneBy(["id" => $voteInfo["nomination"]]);
+        $existingVote = $voteRepository->findOneBy(["member" => $member, "nomination" => $nomination]);
+        //dump($existingVote->getValue());
+        if ($existingVote) { dump("existing vote member:" . $existingVote->getMember()->getNickname()); }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            try {
-                $entityManager->getConnection()->beginTransaction();
+        if ($existingVote == null)
+        {
+            $vote = new Vote();
+            $vote->setMember($member);
+            $now = new \DateTimeImmutable();
+            $vote->setCreatedAt($now);
+            $form = $this->createForm(VoteType::class, $vote);
+            $form->handleRequest($request);
 
-                $entityManager->persist($vote);
-                $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                try {
+                    $entityManager->getConnection()->beginTransaction();
 
-                $yesCount = $voteRepository->countYesVotesByNomination($vote->getNomination());
-                $vote->getNomination()->setYesCount(intval($yesCount[0]["count"]));
-                $noCount = $voteRepository->countNoVotesByNomination($vote->getNomination());
-                $vote->getNomination()->setNoCount(intval($noCount[0]["count"]));
+                    $entityManager->persist($vote);
+                    $entityManager->flush();
 
-                $entityManager->persist($vote->getNomination());
-                $entityManager->flush();
+                    $voteRepository = $this->getDoctrine()->getRepository(Vote::class);
+                    $vote->getNomination()->setVoteCounts($voteRepository);
 
-                $entityManager->getConnection()->commit();
+                    $entityManager->persist($vote->getNomination());
+                    $entityManager->flush();
 
-                return $this->redirectToRoute('nomination_index');
-            } catch (UniqueConstraintViolationException $e) {
-                //TODO: 401(?) error code
-                return new Response("<h1>Already voted!</h1>");
+                    $entityManager->getConnection()->commit();
+
+                    return $this->redirectToRoute('nomination_index');
+
+                } catch (UniqueConstraintViolationException $e) { //should never happen
+                    //TODO: 401(?) error code
+                    return new Response("<h1>Already voted!</h1>");
+                }
             }
         }
+        else if ($existingVote->getValue() != $voteInfo["value"])
+        {
+            return new Response("<h1>Update vote!</h1>");
+        }
+        else
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($existingVote);
+            $entityManager->flush();
+            return $this->redirectToRoute('nomination_index');
+        }
 
+        /*
         return $this->render('vote/new.html.twig', [
             'vote' => $vote,
             'form' => $form->createView(),
         ]);
+        */
     }
 
     /**
