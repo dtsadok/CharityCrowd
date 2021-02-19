@@ -25,13 +25,14 @@ class VoteController extends AbstractController
     {
         //TODO: Replace with logged-in user
         $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
-        //dump("VoteController - logged in as:" . $member->getNickname());
-
         $voteInfo = $request->request->get('vote');
         $nomination = $this->getDoctrine()->getRepository(Nomination::class)->findOneBy(["id" => $voteInfo["nomination"]]);
         $existingVote = $voteRepository->findOneBy(["member" => $member, "nomination" => $nomination]);
-        //dump($existingVote->getValue());
-        if ($existingVote) { dump("existing vote member:" . $existingVote->getMember()->getNickname()); }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        //for updating counts
+        $voteRepository = $this->getDoctrine()->getRepository(Vote::class);
+        $vote = null;
 
         if ($existingVote == null)
         {
@@ -39,43 +40,59 @@ class VoteController extends AbstractController
             $vote->setMember($member);
             $now = new \DateTimeImmutable();
             $vote->setCreatedAt($now);
-            $form = $this->createForm(VoteType::class, $vote);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
-                try {
-                    $entityManager->getConnection()->beginTransaction();
-
-                    $entityManager->persist($vote);
-                    $entityManager->flush();
-
-                    $voteRepository = $this->getDoctrine()->getRepository(Vote::class);
-                    $vote->getNomination()->setVoteCounts($voteRepository);
-
-                    $entityManager->persist($vote->getNomination());
-                    $entityManager->flush();
-
-                    $entityManager->getConnection()->commit();
-
-                    return $this->redirectToRoute('nomination_index');
-
-                } catch (UniqueConstraintViolationException $e) { //should never happen
-                    //TODO: 401(?) error code
-                    return new Response("<h1>Already voted!</h1>");
-                }
-            }
         }
-        else if ($existingVote->getValue() != $voteInfo["value"])
+        else if ($existingVote->getValue() != $voteInfo["value"]) //change vote
         {
-            return new Response("<h1>Update vote!</h1>");
+            $vote = $existingVote;
+        }
+        else //withdraw vote
+        {
+            $entityManager->getConnection()->beginTransaction();
+            $entityManager->remove($existingVote);
+            $entityManager->flush();
+            $existingVote->getNomination()->setVoteCounts($voteRepository);
+            $entityManager->persist($existingVote->getNomination());
+            $entityManager->flush();
+            $entityManager->getConnection()->commit();
+
+            return $this->redirectToRoute('nomination_index');
+        }
+
+        //if we are here, create or update vote
+
+        //TODO: put this in model validation
+        if ($voteInfo["value"] != 'Y' && $voteInfo["value"] != 'N')
+        {
+            //TODO: 422(?) error code
+            return new Response("<h1>Vote must be Y or N, received ${voteInfo["value"]}</h1>");
+        }
+
+        $form = $this->createForm(VoteType::class, $vote);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->getConnection()->beginTransaction();
+
+                $entityManager->persist($vote);
+                $entityManager->flush();
+
+                $vote->getNomination()->setVoteCounts($voteRepository);
+                $entityManager->persist($vote->getNomination());
+                $entityManager->flush();
+
+                $entityManager->getConnection()->commit();
+
+                return $this->redirectToRoute('nomination_index');
+
+            } catch (UniqueConstraintViolationException $e) { //should never happen
+                //TODO: 401(?) error code
+                return new Response("<h1>Already voted!</h1>");
+            }
         }
         else
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($existingVote);
-            $entityManager->flush();
-            return $this->redirectToRoute('nomination_index');
+            return new Response("<h1>Error! (CSRF?)</h1>");
         }
 
         /*
