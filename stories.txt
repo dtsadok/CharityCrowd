@@ -3,18 +3,21 @@
 
 On the nominations page:
 + I can see the list of current nominations with vote counts
+* I can see the nominations for a previous month, with no vote buttons
 + I can vote Yes on a nomination
 + I can vote No on a nomination
-* I can withdraw my vote
++ I can withdraw my vote
++ I can update my vote
 + I can go to the Nominate page
 I can see the total current monthly allocation.
 I can see the current monthly allocation for each nomination.
-I can see how many votes each nomination has received
++ I can see how many votes each nomination has received
 I can see how many votes I have left for the month
 I can see the nominations I've voted on
 
 On the nominate page:
 * I can nominate a new charity
+I can see a auto-completed list of charities as I type a name
 
 On the charities page:
 I can browse through the list of charities
@@ -22,4 +25,4 @@ I can nominate a charity
 
 On the members page:
 I can sign up
-I can log in
+* I can log in
