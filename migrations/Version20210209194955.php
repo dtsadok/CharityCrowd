@@ -27,7 +27,6 @@ final class Version20210209194955 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER INDEX idx_872662187597d3fe RENAME TO idx_872662181d650ba4');
         $this->addSql('DROP INDEX vote_unique');
     }

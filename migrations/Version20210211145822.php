@@ -27,7 +27,6 @@ final class Version20210211145822 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE nomination DROP yes_count');
         $this->addSql('ALTER TABLE nomination DROP no_count');
     }

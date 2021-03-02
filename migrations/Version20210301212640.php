@@ -28,7 +28,6 @@ final class Version20210301212640 extends AbstractMigration
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        //$this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX UNIQ_70E4FA78A188FE64');
         $this->addSql('ALTER TABLE member DROP password');
         $this->addSql('ALTER TABLE member DROP roles');
