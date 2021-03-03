@@ -20,8 +20,8 @@ class NominationController extends AbstractController
      */
     public function index(NominationRepository $nominationRepository): Response
     {
-        //TODO: Replace with logged-in user
-        $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
+        /** @var \App\Entity\Member $user */
+        $member = $this->getUser();
 
         $nominations = $nominationRepository->findAllWithVotesFor($member);
 
@@ -59,8 +59,10 @@ dump($nominations);
      */
     public function new(Request $request): Response
     {
-        //TODO: Replace with logged-in user
-        $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var \App\Entity\Member $user */
+        $member = $this->getUser();
 
         $nomination = new Nomination();
         $nomination->setMember($member);

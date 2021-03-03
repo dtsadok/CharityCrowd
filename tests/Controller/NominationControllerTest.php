@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class NominationControllerTest extends WebTestCase
@@ -18,6 +19,7 @@ class NominationControllerTest extends WebTestCase
     public function testListNominationsWithVoteCounts()
     {
         $client = static::createClient();
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
@@ -44,6 +46,11 @@ class NominationControllerTest extends WebTestCase
     public function testListPageVoteYes()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -62,6 +69,11 @@ class NominationControllerTest extends WebTestCase
     public function testListPageVoteNo()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -82,6 +94,11 @@ class NominationControllerTest extends WebTestCase
     public function testListPageWithdrawYesVote()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -98,6 +115,11 @@ class NominationControllerTest extends WebTestCase
     public function testListPageWithdrawNoVote()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -114,6 +136,11 @@ class NominationControllerTest extends WebTestCase
     public function testChangeVoteFromYesToNo()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -130,6 +157,11 @@ class NominationControllerTest extends WebTestCase
     public function testChangeVoteFromNoToYes()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -146,6 +178,11 @@ class NominationControllerTest extends WebTestCase
     public function testNominateCharity()
     {
         $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
         $nominatePage = $client->request('GET', '/nominate/charity');
         $this->assertResponseIsSuccessful();
 
@@ -156,7 +193,7 @@ class NominationControllerTest extends WebTestCase
         ]);
         $this->assertResponseRedirects('/nominations/charities');
 
-        $listPage->filter('#nominations tbody tr:nth-child(4) td.name');
-        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(4) .name', 'Foo Bar');
+        //$listPage->filter('#nominations tbody tr:nth-child(4) td.name');
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(4) td.name', 'Foo Bar');
     }
 }

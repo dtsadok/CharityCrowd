@@ -23,8 +23,11 @@ class VoteController extends AbstractController
      */
     public function new(Request $request, VoteRepository $voteRepository): Response
     {
-        //TODO: Replace with logged-in user
-        $member = $this->getDoctrine()->getRepository(Member::class)->findAll()[0];
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var \App\Entity\Member $user */
+        $member = $this->getUser();
+
         $voteInfo = $request->request->get('vote');
         $nomination = $this->getDoctrine()->getRepository(Nomination::class)->findOneBy(["id" => $voteInfo["nomination"]]);
         $existingVote = $voteRepository->findOneBy(["member" => $member, "nomination" => $nomination]);
