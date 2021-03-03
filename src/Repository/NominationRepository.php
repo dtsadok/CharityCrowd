@@ -19,7 +19,7 @@ class NominationRepository extends ServiceEntityRepository
         parent::__construct($registry, Nomination::class);
     }
 
-    public function findAllWithVotesFor($member)
+    public function findAllForMonthWithMemberVotes($month, $year, $member)
     {
         $entityManager = $this->getEntityManager();
 
@@ -27,13 +27,17 @@ class NominationRepository extends ServiceEntityRepository
             "SELECT nom, v.value AS vote
              FROM App\Entity\Nomination nom
              LEFT JOIN nom.votes v
-             WITH v.member = :m
+             WITH v.member = :member
+             WHERE MONTH(nom.created_at) = :month
+             AND YEAR(nom.created_at) = :year
              GROUP BY nom.id, v.value
              ORDER BY nom.id ASC"
         );
 
         return $query
-            ->setParameter('m', $member)
+            ->setParameter('member', $member)
+            ->setParameter('month', $month)
+            ->setParameter('year', $year)
             ->getResult();
     }
 

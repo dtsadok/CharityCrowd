@@ -16,7 +16,7 @@ class NominationControllerTest extends WebTestCase
     //when I vote No on a nomination
     //it should show on the page
 
-    public function testListNominationsWithVoteCounts()
+    public function testListCurrentNominationsWithVoteCounts()
     {
         $client = static::createClient();
 
@@ -25,6 +25,7 @@ class NominationControllerTest extends WebTestCase
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
+        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(4) .name', 'Old Foo');
 
         //see src/DataFixtures/VoteFixtures.php for vote counts
         $listPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
@@ -41,6 +42,23 @@ class NominationControllerTest extends WebTestCase
         $form = $listPage->selectButton('1');
         $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
         $form = $listPage->selectButton('2');
+    }
+
+    public function testListPastNominations()
+    {
+        $now = new \DateTimeImmutable();
+        $oneMonth = new \DateInterval('P1M');
+        $lastMonth = $now->sub($oneMonth);
+        $month = $lastMonth->format("F");
+        $year = $lastMonth->format("Y");
+
+        $client = static::createClient();
+        $listPage = $client->request('GET', "/nominations/charities/$month/$year");
+
+        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
+        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
+        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(4) .name', 'Old Foo');
     }
 
     public function testListPageVoteYes()

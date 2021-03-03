@@ -14,6 +14,8 @@ class NominationFixtures extends Fixture
 
         $voteCounts = ["Foo" => ["Y" => 1, "N" => 1], "Bar" => ["Y" => 4, "N" => 0], "Baz" => ["Y" => 0, "N" => 4]];
 
+        $now = new \DateTimeImmutable();
+
         foreach (["Foo", "Bar", "Baz"] as $idx => $name) {
             $i = $idx + 1;
             $nomination = new Nomination();
@@ -23,7 +25,6 @@ class NominationFixtures extends Fixture
             $nomination->setYesCount($voteCounts[$name]["Y"]);
             $nomination->setNoCount($voteCounts[$name]["N"]);
 
-            $now = new \DateTimeImmutable();
             $nomination->setCreatedAt($now);
             $nomination->setUpdatedAt($now);
 
@@ -31,6 +32,19 @@ class NominationFixtures extends Fixture
 
             $manager->persist($nomination);
         }
+
+        $oneMonth = new \DateInterval('P1M');
+        $lastMonth = $now->sub($oneMonth);
+        $nomination = new Nomination();
+        $nomination->setMember($member);
+        $nomination->setName("Old Foo");
+        $nomination->setYesCount(0);
+        $nomination->setNoCount(0);
+        $nomination->setCreatedAt($lastMonth);
+        $nomination->setUpdatedAt($lastMonth);
+        $this->addReference("nomination-4", $nomination);
+        $manager->persist($nomination);
+
         $manager->flush();
     }
 }

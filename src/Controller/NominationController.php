@@ -16,14 +16,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class NominationController extends AbstractController
 {
     /**
-     * @Route("/nominations/charities", name="nomination_index", methods={"GET"})
+     * @Route("/nominations/charities/{month}/{year}", name="nomination_index", methods={"GET"})
      */
-    public function index(NominationRepository $nominationRepository): Response
+    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository): Response
     {
         /** @var \App\Entity\Member $user */
         $member = $this->getUser();
 
-        $nominations = $nominationRepository->findAllWithVotesFor($member);
+        if ($month == null)
+        {
+            $now = new \DateTimeImmutable();
+            $month = $now->format('F');
+        }
+        if ($year == null)
+        {
+            $now = new \DateTimeImmutable();
+            $year = $now->format('Y');
+        }
+
+
+        //TODO [SECURITY]: validate input
+        $date = \DateTimeImmutable::createFromFormat('d F Y', "1 $month $year");
+dump($date);
+        if (!$date) { $date = new \DateTimeImmutable(); }
+
+        $nominations = $nominationRepository->findAllForMonthWithMemberVotes($date->format('m'), $date->format('Y'), $member);
 
 dump($nominations);
 
