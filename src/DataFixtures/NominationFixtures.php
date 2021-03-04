@@ -37,7 +37,7 @@ class NominationFixtures extends Fixture
         $lastMonth = $now->sub($oneMonth);
         $nomination = new Nomination();
         $nomination->setMember($member);
-        $nomination->setName("Old Foo");
+        $nomination->setName("Old Nomination");
         $nomination->setYesCount(0);
         $nomination->setNoCount(0);
         $nomination->setCreatedAt($lastMonth);

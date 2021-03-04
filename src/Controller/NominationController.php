@@ -23,21 +23,12 @@ class NominationController extends AbstractController
         /** @var \App\Entity\Member $user */
         $member = $this->getUser();
 
-        if ($month == null)
-        {
-            $now = new \DateTimeImmutable();
-            $month = $now->format('F');
-        }
-        if ($year == null)
-        {
-            $now = new \DateTimeImmutable();
-            $year = $now->format('Y');
-        }
-
+        $now = new \DateTimeImmutable();
+        if ($month == null) { $month = $now->format('F'); }
+        if ($year == null) { $year = $now->format('Y'); }
 
         //TODO [SECURITY]: validate input
         $date = \DateTimeImmutable::createFromFormat('d F Y', "1 $month $year");
-dump($date);
         if (!$date) { $date = new \DateTimeImmutable(); }
 
         $nominations = $nominationRepository->findAllForMonthWithMemberVotes($date->format('m'), $date->format('Y'), $member);
@@ -50,6 +41,7 @@ dump($nominations);
         foreach ($nominations as $nomination)
         {
             $id = $nomination[0]->getId();
+
             $yesVote = new Vote();
             $yesVote->setMember($member)->setNomination($nomination[0])->setValue('Y');
             $voteYesButton = $this->createForm(VoteType::class, $yesVote,
@@ -67,7 +59,9 @@ dump($nominations);
 
         return $this->render('nomination/index.html.twig', [
             'nominations' => $nominations,
-            'voteForms' => $voteForms
+            'voteForms' => $voteForms,
+            'month' => $month,
+            'year' => $year
         ]);
     }
 

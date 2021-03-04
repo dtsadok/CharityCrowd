@@ -32,6 +32,11 @@ class VoteController extends AbstractController
         $nomination = $this->getDoctrine()->getRepository(Nomination::class)->findOneBy(["id" => $voteInfo["nomination"]]);
         $existingVote = $voteRepository->findOneBy(["member" => $member, "nomination" => $nomination]);
 
+        if (!$nomination->isCurrent())
+        {
+            return new Response("<h1>Nomination expired</h1>");
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         //for updating counts
         $voteRepository = $this->getDoctrine()->getRepository(Vote::class);
@@ -90,12 +95,12 @@ class VoteController extends AbstractController
 
             } catch (UniqueConstraintViolationException $e) { //should never happen
                 //TODO: 401(?) error code
-                return new Response("<h1>Already voted!</h1>");
+                return new Response("<h1>Already voted</h1>");
             }
         }
         else
         {
-            return new Response("<h1>Error! (CSRF?)</h1>");
+            return new Response("<h1>Error (CSRF?)</h1>");
         }
 
         /*

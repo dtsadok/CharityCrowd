@@ -195,4 +195,15 @@ class Nomination
 
         return $this;
     }
+
+    public function isCurrent(): bool
+    {
+        $now = new \DateTimeImmutable();
+        $currentMonth = $now->format('F');
+        $currentYear = $now->format('Y');
+        $nominationMonth = $this->getCreatedAt()->format('F');
+        $nominationYear = $this->getCreatedAt()->format('Y');
+
+        return $nominationMonth == $currentMonth && $nominationYear == $currentYear;
+    }
 }

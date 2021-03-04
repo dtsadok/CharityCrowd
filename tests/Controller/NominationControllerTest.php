@@ -25,7 +25,7 @@ class NominationControllerTest extends WebTestCase
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
-        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(4) .name', 'Old Foo');
+        $this->assertSelectorNotExists('#nominations tbody tr:nth-child(4) .name'); //Old Nomination
 
         //see src/DataFixtures/VoteFixtures.php for vote counts
         $listPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
@@ -55,10 +55,11 @@ class NominationControllerTest extends WebTestCase
         $client = static::createClient();
         $listPage = $client->request('GET', "/nominations/charities/$month/$year");
 
+        $this->assertSelectorExists('#nominations tbody tr:nth-child(1) .name');
+        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Old Nomination');
         $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
         $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
         $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
-        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(4) .name', 'Old Foo');
     }
 
     public function testListPageVoteYes()

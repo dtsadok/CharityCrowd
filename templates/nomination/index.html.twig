@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Nominations</h1>
+    <h3>for {{month}} {{year}}</h3>
 
     <a class="nominate" href="{{ path('nomination_new') }}">Nominate Additional Charity</a>
 
@@ -25,10 +26,18 @@
                 <td>{{ nomination.0.pitch }}</td>
                 <td>{{ nomination.0.createdAt ? nomination.0.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="yes_votes">
-                    {{ include('nomination/_vote_yes_button.html.twig') }}
+                    {% if nomination.0.current %}
+                        {{ include('nomination/_vote_yes_button.html.twig') }}
+                    {% else %}
+                        <span id="vote-{{nomination.0.id}}-yes" class="vote-yes">{{ nomination.0.yesCount }}</span>
+                    {% endif %}
                 </td>
                 <td class="no_votes">
-                    {{ include('nomination/_vote_no_button.html.twig') }}
+                    {% if nomination.0.current %}
+                        {{ include('nomination/_vote_no_button.html.twig') }}
+                    {% else %}
+                        <span id="vote-{{nomination.0.id}}-no" class="vote-no">{{ nomination.0.noCount }}</span>
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{{ path('nomination_show', {'id': nomination.0.id}) }}">show</a>
