@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Comment;
 use App\Entity\Vote;
 use App\Repository\NominationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,9 +62,15 @@ class Nomination
      */
     private $no_count;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="nomination")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,14 +203,52 @@ class Nomination
         return $this;
     }
 
+    public function getMonth(): string
+    {
+        return $this->getCreatedAt()->format('F');
+    }
+
+    public function getYear(): string
+    {
+        return $this->getCreatedAt()->format('Y');
+    }
+
     public function isCurrent(): bool
     {
         $now = new \DateTimeImmutable();
         $currentMonth = $now->format('F');
         $currentYear = $now->format('Y');
-        $nominationMonth = $this->getCreatedAt()->format('F');
-        $nominationYear = $this->getCreatedAt()->format('Y');
 
-        return $nominationMonth == $currentMonth && $nominationYear == $currentYear;
+        return $this->getMonth() == $currentMonth && $this->getYear() == $currentYear;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setNomination($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getNomination() === $this) {
+                $comment->setNomination(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -3,36 +3,36 @@
 {% block title %}Nomination{% endblock %}
 
 {% block body %}
-    <h1>Nomination</h1>
+    <h1>Nomination for {{ nomination.name }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ nomination.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ nomination.name }}</td>
-            </tr>
-            <tr>
-                <th>Pitch</th>
-                <td>{{ nomination.pitch }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ nomination.updatedAt ? nomination.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="pitch">
+        {{ nomination.pitch }}
+    </div>
 
-    <a href="{{ path('nomination_index') }}">back to list</a>
+    <div class="proposal-details">
+        Proposed
+        <span>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</span>
+        by
+        <span>{{ nomination.member.nickname }}</span>
+    </div>
+
+    <div class="comments">
+        {{ include('comment/_form.html.twig') }}
+        {% for comment in nomination.comments %}
+            <div class="comment">{{comment.commentText}}</div>
+            <div class="comment-details">
+                <span>{{ comment.createdAt ? comment.createdAt|date('Y-m-d H:i:s') : '' }}</span>
+                by
+                <span>{{ comment.member.nickname }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <nav>
+    <a href="{{ path('nomination_index', {'month': nomination.month, 'year': nomination.year}) }}">back to list</a>
 
     <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
+    </nav>
 
     {{ include('nomination/_delete_form.html.twig') }}
 {% endblock %}

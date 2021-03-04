@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Member;
 use App\Entity\Nomination;
 use App\Entity\Vote;
+use App\Form\CommentType;
 use App\Form\NominationType;
 use App\Form\VoteType;
 use App\Repository\NominationRepository;
@@ -105,8 +107,17 @@ dump($nominations);
      */
     public function show(Nomination $nomination): Response
     {
+        /** @var \App\Entity\Member $user */
+        $member = $this->getUser();
+
+        $comment = new Comment();
+        $comment->setNomination($nomination);
+        $commentForm = $this->createForm(CommentType::class, $comment,
+                ['action' => $this->generateUrl('comment_new')]);
+
         return $this->render('nomination/show.html.twig', [
             'nomination' => $nomination,
+            'form' => $commentForm->createView(),
         ]);
     }
 
