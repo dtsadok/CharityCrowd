@@ -22,7 +22,11 @@
         <tbody>
         {% for nomination in nominations %}
             <tr>
-                <td class="name">{{ nomination.0.name }}</td>
+                <td class="name">
+                    <a href="/nomination/{{nomination.0.id}}">
+                        {{ nomination.0.name }}
+                    </a>
+                </td>
                 <td>{{ nomination.0.pitch }}</td>
                 <td>{{ nomination.0.createdAt ? nomination.0.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="yes_votes">
