@@ -8,6 +8,7 @@ use App\Entity\Vote;
 use App\Form\NominationType;
 use App\Form\VoteType;
 use App\Repository\NominationRepository;
+use App\Service\MonthYearService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class NominationController extends AbstractController
     /**
      * @Route("/nominations/charities/{month}/{year}", name="nomination_index", methods={"GET"})
      */
-    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository): Response
+    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, MonthYearService $monthYearService): Response
     {
         /** @var \App\Entity\Member $user */
         $member = $this->getUser();
@@ -28,10 +29,9 @@ class NominationController extends AbstractController
         if ($year == null) { $year = $now->format('Y'); }
 
         //TODO [SECURITY]: validate input
-        $date = \DateTimeImmutable::createFromFormat('d F Y', "1 $month $year");
-        if (!$date) { $date = new \DateTimeImmutable(); }
+        $monthNumber = $monthYearService->getMonthNumberFromMonthName($month);
 
-        $nominations = $nominationRepository->findAllForMonthWithMemberVotes($date->format('m'), $date->format('Y'), $member);
+        $nominations = $nominationRepository->findAllForMonthWithMemberVotes($monthNumber, $year, $member);
 
 dump($nominations);
 
