@@ -9,21 +9,24 @@
         {{ nomination.pitch }}
     </div>
 
-    <div class="proposal-details">
+    <div class="details">
         Proposed
-        <span>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</span>
+        <span>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i') : '' }}</span>
         by
         <span>{{ nomination.member.nickname }}</span>
     </div>
 
-    <div class="comments">
+    <div id="comments">
         {{ include('comment/_form.html.twig') }}
+
         {% for comment in nomination.comments %}
-            <div class="comment">{{comment.commentText}}</div>
-            <div class="comment-details">
-                <span>{{ comment.createdAt ? comment.createdAt|date('Y-m-d H:i:s') : '' }}</span>
-                by
-                <span>{{ comment.member.nickname }}</span>
+            <div class="comment">
+                <div class="comment-text">{{comment.commentText}}</div>
+                <div class="details">
+                    <span>{{ comment.createdAt ? comment.createdAt|date('Y-m-d H:i:s') : '' }}</span>
+                    by
+                    <span>{{ comment.member.nickname }}</span>
+                </div>
             </div>
         {% endfor %}
     </div>
