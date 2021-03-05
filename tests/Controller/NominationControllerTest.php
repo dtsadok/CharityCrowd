@@ -8,12 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class NominationControllerTest extends WebTestCase
 {
     //when not logged in
-    //it should not let me vote(?)
+    //it should not let me make a new nomination
     //when logged in
     //when I make a new nomination
-    //when I vote Yes on a nomination
-    //it should show on the page
-    //when I vote No on a nomination
     //it should show on the page
 
     public function testListCurrentNominationsWithVoteCounts()
@@ -62,138 +59,6 @@ class NominationControllerTest extends WebTestCase
         $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
     }
 
-    public function testListPageVoteYes()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        //$mech->submit_form_ok({form_name => 'form-1-yes'});
-
-        $listPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
-        $form = $listPage->selectButton('1')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
-        $form = $listPage->selectButton('2');
-        $newPage->filter('#nominations tbody tr:nth-child(1) td.no-votes');
-        $form = $listPage->selectButton('1');
-    }
-    public function testListPageVoteNo()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        //$mech->submit_form_ok({form_name => 'form-1-no'});
-
-        $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
-        $listPage->filter('#nominations tbody tr:nth-child(1) td.no-votes');
-        $form = $listPage->selectButton('1')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(1) td.yes-votes');
-        $form = $listPage->selectButton('1');
-        $newPage->filter('#nominations tbody tr:nth-child(1) td.no-votes');
-        $form = $listPage->selectButton('2');
-    }
-
-    public function testListPageWithdrawYesVote()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        $listPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
-        $form = $listPage->selectButton('4')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
-        $form = $listPage->selectButton('3');
-        $newPage->filter('#nominations tbody tr:nth-child(2) td.no-votes');
-        $form = $listPage->selectButton('0');
-    }
-    public function testListPageWithdrawNoVote()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
-        $form = $listPage->selectButton('4')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(3) td.yes-votes');
-        $form = $listPage->selectButton('0');
-        $newPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
-        $form = $listPage->selectButton('3');
-    }
-    public function testChangeVoteFromYesToNo()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        $listPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
-        $form = $listPage->selectButton('4')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(2) td.yes-votes');
-        $form = $listPage->selectButton('3');
-        $newPage->filter('#nominations tbody tr:nth-child(2) td.no-votes');
-        $form = $listPage->selectButton('1');
-    }
-    public function testChangeVoteFromNoToYes()
-    {
-        $client = static::createClient();
-
-        $memberRepository = static::$container->get(MemberRepository::class);
-        $member = $memberRepository->findOneByNickname('member-1');
-        $client->loginUser($member);
-
-        $listPage = $client->request('GET', '/nominations/charities');
-        $this->assertResponseIsSuccessful();
-
-        $listPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
-        $form = $listPage->selectButton('4')->form();
-        $newPage = $client->submit($form);
-        $this->assertResponseRedirects('/nominations/charities');
-
-        $newPage->filter('#nominations tbody tr:nth-child(3) td.yes-votes');
-        $form = $listPage->selectButton('1');
-        $newPage->filter('#nominations tbody tr:nth-child(3) td.no-votes');
-        $form = $listPage->selectButton('3');
-    }
     public function testNominateCharity()
     {
         $client = static::createClient();
