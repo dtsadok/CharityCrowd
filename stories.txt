@@ -18,8 +18,8 @@ I can see the total current monthly allocation
 I can see the current monthly allocation for each nomination
 I can see how many votes I have left for the month
 - I can see the nominations I've voted on
-I can view comments for a nomination
-I can comment on a nomination
+* I can view comments for a nomination
+* I can comment on a nomination
 
 On the nominate page:
 * I can nominate one new charity every month
@@ -30,8 +30,12 @@ On the charities page:
 - I can browse through the list of charities
 - I can nominate a charity
 
-On the members page:
+On the security page:
 - I can sign up
 + I can log in
 + I can log out
 I can change my password
+
+On the member page:
+I can see a member's real name
+I can see a member's list of nominations
