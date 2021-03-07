@@ -3,7 +3,9 @@
 
     {{ form_row(voteForms[nomination.id].no.nomination) }}
 
-    <input type="submit" id="vote-{{nomination.id}}-no" class="vote-no btn" 
+    <input type="submit"
+           id="vote-{{nomination.id}}-no"
+           class="vote-no btn {% if nomination.id in memberVotes|keys and memberVotes[nomination.id].value == 'N' %}voted{%endif%}"
            aria-label="No: {{nomination.noCount}} votes"
            value="{{ button_label|default(nomination.noCount) }}" />
 {{ form_end(voteForms[nomination.id].no) }}
