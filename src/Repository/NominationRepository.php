@@ -19,6 +19,25 @@ class NominationRepository extends ServiceEntityRepository
         parent::__construct($registry, Nomination::class);
     }
 
+    public function findAllForMonth($month, $year)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT nom
+             FROM App\Entity\Nomination nom
+             WHERE MONTH(nom.created_at) = :month
+             AND YEAR(nom.created_at) = :year
+             ORDER BY nom.id ASC"
+        );
+
+        return $query
+            ->setParameter('month', $month)
+            ->setParameter('year', $year)
+            ->getResult();
+
+    }
+
     public function findAllForMonthWithMemberVotes($month, $year, $member)
     {
         $entityManager = $this->getEntityManager();

@@ -19,6 +19,27 @@ class VoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vote::class);
     }
 
+    public function findAllForMemberForMonth($member, $month, $year)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            "SELECT vote
+             FROM App\Entity\Vote vote
+             WHERE vote.member = :member
+             AND MONTH(vote.created_at) = :month
+             AND YEAR(vote.created_at) = :year
+             ORDER BY vote.id ASC"
+        );
+
+        return $query
+            ->setParameter('member', $member)
+            ->setParameter('month', $month)
+            ->setParameter('year', $year)
+            ->getResult();
+
+    }
+
      ///**
     //* @return Vote[] Returns an array of Vote objects
     //*/

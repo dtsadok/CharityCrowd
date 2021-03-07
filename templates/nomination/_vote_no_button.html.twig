@@ -1,9 +1,9 @@
-{{ form_start(voteForms[nomination.0.id].no) }}
-    {{ form_errors(voteForms[nomination.0.id].no) }}
+{{ form_start(voteForms[nomination.id].no) }}
+    {{ form_errors(voteForms[nomination.id].no) }}
 
-    {{ form_row(voteForms[nomination.0.id].no.nomination) }}
+    {{ form_row(voteForms[nomination.id].no.nomination) }}
 
-    <input type="submit" id="vote-{{nomination.0.id}}-no" class="vote-no btn" 
-           aria-label="No: {{nomination.0.noCount}} votes"
-           value="{{ button_label|default(nomination.0.noCount) }}" />
-{{ form_end(voteForms[nomination.0.id].no) }}
+    <input type="submit" id="vote-{{nomination.id}}-no" class="vote-no btn" 
+           aria-label="No: {{nomination.noCount}} votes"
+           value="{{ button_label|default(nomination.noCount) }}" />
+{{ form_end(voteForms[nomination.id].no) }}

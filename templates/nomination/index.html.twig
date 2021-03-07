@@ -23,29 +23,29 @@
         {% for nomination in nominations %}
             <tr>
                 <td class="name">
-                    <a href="/nomination/{{nomination.0.id}}">
-                        {{ nomination.0.name }}
+                    <a href="/nomination/{{nomination.id}}">
+                        {{ nomination.name }}
                     </a>
                 </td>
-                <td>{{ nomination.0.pitch }}</td>
-                <td>{{ nomination.0.createdAt ? nomination.0.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ nomination.pitch }}</td>
+                <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="yes_votes">
-                    {% if nomination.0.current %}
+                    {% if nomination.current %}
                         {{ include('nomination/_vote_yes_button.html.twig') }}
                     {% else %}
-                        <span id="vote-{{nomination.0.id}}-yes" class="vote-yes">{{ nomination.0.yesCount }}</span>
+                        <span id="vote-{{nomination.id}}-yes" class="vote-yes">{{ nomination.yesCount }}</span>
                     {% endif %}
                 </td>
                 <td class="no_votes">
-                    {% if nomination.0.current %}
+                    {% if nomination.current %}
                         {{ include('nomination/_vote_no_button.html.twig') }}
                     {% else %}
-                        <span id="vote-{{nomination.0.id}}-no" class="vote-no">{{ nomination.0.noCount }}</span>
+                        <span id="vote-{{nomination.id}}-no" class="vote-no">{{ nomination.noCount }}</span>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('nomination_show', {'id': nomination.0.id}) }}">show</a>
-                    <a href="{{ path('nomination_edit', {'id': nomination.0.id}) }}">edit</a>
+                    <a href="{{ path('nomination_show', {'id': nomination.id}) }}">show</a>
+                    <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

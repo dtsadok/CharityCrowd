@@ -10,6 +10,7 @@ use App\Form\CommentType;
 use App\Form\NominationType;
 use App\Form\VoteType;
 use App\Repository\NominationRepository;
+use App\Repository\VoteRepository;
 use App\Service\MonthYearService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class NominationController extends AbstractController
     /**
      * @Route("/nominations/charities/{month}/{year}", name="nomination_index", methods={"GET"})
      */
-    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, MonthYearService $monthYearService): Response
+    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, VoteRepository $voteRepository, MonthYearService $monthYearService): Response
     {
         /** @var \App\Entity\Member $user */
         $member = $this->getUser();
@@ -33,7 +34,7 @@ class NominationController extends AbstractController
         //TODO [SECURITY]: validate input
         $monthNumber = $monthYearService->getMonthNumberFromMonthName($month);
 
-        $nominations = $nominationRepository->findAllForMonthWithMemberVotes($monthNumber, $year, $member);
+        $nominations = $nominationRepository->findAllForMonth($monthNumber, $year);
 
 dump($nominations);
 
@@ -42,26 +43,34 @@ dump($nominations);
 
         foreach ($nominations as $nomination)
         {
-            $id = $nomination[0]->getId();
+            $id = $nomination->getId();
 
             $yesVote = new Vote();
-            $yesVote->setMember($member)->setNomination($nomination[0])->setValue('Y');
+            $yesVote->setMember($member)->setNomination($nomination)->setValue('Y');
             $voteYesButton = $this->createForm(VoteType::class, $yesVote,
                 ['action' => $this->generateUrl('vote_new')]
             );
             $voteForms[$id]['yes'] = $voteYesButton->createView();
+
             $noVote = new Vote();
-            $noVote->setMember($member)->setNomination($nomination[0])->setValue('N');
+            $noVote->setMember($member)->setNomination($nomination)->setValue('N');
             $voteNoButton = $this->createForm(VoteType::class, $noVote,
                 ['action' => $this->generateUrl('vote_new')]
             );
-
             $voteForms[$id]['no'] = $voteNoButton->createView();
+        }
+
+        $memberVotes = [];
+        $votes = $voteRepository->findAllForMemberForMonth($member, $monthNumber, $year);
+        foreach ($votes as $vote)
+        {
+            $memberVotes[ $vote->getNomination()->getId() ] = $vote;
         }
 
         return $this->render('nomination/index.html.twig', [
             'nominations' => $nominations,
             'voteForms' => $voteForms,
+            'memberVotes' => $memberVotes,
             'month' => $month,
             'year' => $year
         ]);

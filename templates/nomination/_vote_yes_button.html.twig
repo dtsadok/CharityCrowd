@@ -1,9 +1,9 @@
-{{ form_start(voteForms[nomination.0.id].yes) }}
-    {{ form_errors(voteForms[nomination.0.id].yes) }}
+{{ form_start(voteForms[nomination.id].yes) }}
+    {{ form_errors(voteForms[nomination.id].yes) }}
 
-    {{ form_row(voteForms[nomination.0.id].yes.nomination) }}
+    {{ form_row(voteForms[nomination.id].yes.nomination) }}
 
-    <input type="submit" id="vote-{{nomination.0.id}}-yes" class="vote-yes btn" 
-           aria-label="Yes: {{nomination.0.yesCount}} votes"
-           value="{{ button_label|default(nomination.0.yesCount) }}" />
-{{ form_end(voteForms[nomination.0.id].yes) }}
+    <input type="submit" id="vote-{{nomination.id}}-yes" class="vote-yes btn" 
+           aria-label="Yes: {{nomination.yesCount}} votes"
+           value="{{ button_label|default(nomination.yesCount) }}" />
+{{ form_end(voteForms[nomination.id].yes) }}
