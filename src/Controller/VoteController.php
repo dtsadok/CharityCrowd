@@ -34,7 +34,12 @@ class VoteController extends AbstractController
 
         if (!$nomination->isCurrent())
         {
-            return new Response("<h1>Nomination expired</h1>");
+            return new Response("<h1>Cannot vote on nomination from previous month</h1>");
+        }
+
+        if ($existingVote && !$existingVote->isCurrent())
+        {
+            return new Response("<h1>Cannot change old vote</h1>");
         }
 
         $entityManager = $this->getDoctrine()->getManager();

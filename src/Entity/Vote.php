@@ -97,4 +97,24 @@ class Vote
 
         return $this;
     }
+
+    public function getMonth(): string
+    {
+        return $this->getCreatedAt()->format('F');
+    }
+
+    public function getYear(): string
+    {
+        return $this->getCreatedAt()->format('Y');
+    }
+
+
+    public function isCurrent(): bool
+    {
+        $now = new \DateTimeImmutable();
+        $currentMonth = $now->format('F');
+        $currentYear = $now->format('Y');
+
+        return $this->getMonth() == $currentMonth && $this->getYear() == $currentYear;
+    }
 }
