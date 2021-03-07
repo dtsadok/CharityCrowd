@@ -1,0 +1,19 @@
+input.vote-yes.btn, input.vote-no.btn {
+    padding: 0.25em 1em;
+    border: 2px solid black;
+    color: white;
+}
+input.vote-yes.btn {
+    background-color: #18a314;
+}
+
+input.vote-no.btn {
+    background-color: #a41419;
+}
+
+input.btn.voted {
+    border: 2px solid white;
+    font-weight:bold;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
