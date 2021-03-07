@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use App\Entity\Vote;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-class VoteFixtures extends Fixture
+class VoteFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -48,5 +49,13 @@ class VoteFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+    
+    public function getDependencies()
+    {
+        return [
+            MemberFixtures::class,
+            NominationFixtures::class
+        ];
     }
 }

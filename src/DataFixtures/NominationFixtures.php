@@ -2,11 +2,12 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use App\Entity\Nomination;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
 
-class NominationFixtures extends Fixture
+class NominationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -46,5 +47,12 @@ class NominationFixtures extends Fixture
         $manager->persist($nomination);
 
         $manager->flush();
+    }
+    
+    public function getDependencies()
+    {
+        return [
+            MemberFixtures::class,
+        ];
     }
 }
