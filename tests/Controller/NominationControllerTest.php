@@ -76,6 +76,7 @@ class NominationControllerTest extends WebTestCase
             'nomination[pitch]' => 'This is a great charity!',
         ]);
         $this->assertResponseRedirects('/nominations/charities');
+        $client->followRedirect();
 
         //$listPage->filter('#nominations tbody tr:nth-child(4) td.name');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(4) td.name', 'Foo Bar');

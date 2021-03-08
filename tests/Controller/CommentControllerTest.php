@@ -37,12 +37,13 @@ class CommentControllerTest extends WebTestCase
 
         $path = str_replace($link->getUri(), 'http://localhost', '');
         $this->assertResponseRedirects($path);
+        $client->followRedirect();
 
         //assert comment is on the page
         //.comment .comment-details
-        //$this->assertSelectorTextContains('#comments .comment-text', 'This is a great charity!');
+        $this->assertSelectorTextContains('#comments .comment-text', 'This is a great charity!');
         //assertEqual('This is a great charity!',
-        $showPage->filter("#comments .comment-text")->text();
+        //$showPage->filter("#comments .comment-text")->text();
     }
 
     public function testListCommentsOnNomination()
