@@ -117,6 +117,7 @@ class VoteController extends AbstractController
     /**
      * @Route("/{id}", name="vote_delete", methods={"DELETE"})
      */
+    /*
     public function delete(Request $request, Vote $vote): Response
     {
         if ($this->isCsrfTokenValid('delete'.$vote->getId(), $request->request->get('_token'))) {
@@ -128,4 +129,5 @@ class VoteController extends AbstractController
         //return $this->redirectToRoute('vote_index');
         return $this->response("<h1>deleted</h1>");
     }
+    */
 }
