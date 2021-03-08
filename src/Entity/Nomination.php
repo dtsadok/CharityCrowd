@@ -11,6 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=NominationRepository::class)
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"}),
+ *      @ORM\Index(name="percentage_idx", columns={"percentage"})
+ * })
  */
 class Nomination
 {
@@ -61,6 +65,12 @@ class Nomination
      * @ORM\Column(type="integer")
      */
     private $no_count;
+
+    //45.23% is stored as 4523
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $percentage;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="nomination")
@@ -199,6 +209,18 @@ class Nomination
 
         $noCount = $voteRepository->countNoVotesByNomination($this);
         $this->setNoCount(intval($noCount[0]["count"]));
+
+        return $this;
+    }
+
+    public function getPercentage(): ?int
+    {
+        return $this->percentage;
+    }
+
+    public function setPercentage(int $percentage): self
+    {
+        $this->percentage = $percentage;
 
         return $this;
     }

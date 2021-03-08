@@ -16,6 +16,7 @@
                 <th>Created_at</th>
                 <th>YES</th>
                 <th>NO</th>
+                <th>Allocation</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -42,6 +43,9 @@
                     {% else %}
                         <span id="vote-{{nomination.id}}-no" class="vote-no">{{ nomination.noCount }}</span>
                     {% endif %}
+                </td>
+                <td class="allocation">
+                    {{ nomination.percentage/100 }}%
                 </td>
                 <td>
                     <a href="{{ path('nomination_show', {'id': nomination.id}) }}">show</a>
