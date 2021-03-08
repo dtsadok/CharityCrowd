@@ -18,9 +18,6 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $comment->setMember($member);
         $comment->setNomination($nomination);
         $comment->setCommentText("What a great charity!");
-        $now = new \DateTimeImmutable();
-        $comment->setCreatedAt($now);
-        $comment->setUpdatedAt($now);
         $manager->persist($comment);
         $manager->flush();
     }

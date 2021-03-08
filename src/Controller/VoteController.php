@@ -51,8 +51,6 @@ class VoteController extends AbstractController
         {
             $vote = new Vote();
             $vote->setMember($member);
-            $now = new \DateTimeImmutable();
-            $vote->setCreatedAt($now);
         }
         else if ($existingVote->getValue() != $voteInfo["value"]) //change vote
         {

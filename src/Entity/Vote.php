@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass=VoteRepository::class)
@@ -16,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Vote
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -39,11 +42,6 @@ class Vote
      * @ORM\Column(type="string", length=1)
      */
     private $value;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created_at;
 
     public function getId(): ?int
     {
@@ -82,18 +80,6 @@ class Vote
     public function setValue(string $value): self
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }

@@ -26,8 +26,8 @@ class NominationRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             "SELECT nom
              FROM App\Entity\Nomination nom
-             WHERE MONTH(nom.created_at) = :month
-             AND YEAR(nom.created_at) = :year
+             WHERE MONTH(nom.createdAt) = :month
+             AND YEAR(nom.createdAt) = :year
              ORDER BY nom.id ASC"
         );
 
@@ -47,8 +47,8 @@ class NominationRepository extends ServiceEntityRepository
              FROM App\Entity\Nomination nom
              LEFT JOIN nom.votes v
              WITH v.member = :member
-             WHERE MONTH(nom.created_at) = :month
-             AND YEAR(nom.created_at) = :year
+             WHERE MONTH(nom.createdAt) = :month
+             AND YEAR(nom.createdAt) = :year
              GROUP BY nom.id, v.value
              ORDER BY nom.id ASC"
         );

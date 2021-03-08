@@ -15,7 +15,7 @@ class NominationFixtures extends Fixture implements DependentFixtureInterface
 
         $voteCounts = ["Foo" => ["Y" => 1, "N" => 1], "Bar" => ["Y" => 4, "N" => 0], "Baz" => ["Y" => 0, "N" => 4]];
 
-        $now = new \DateTimeImmutable();
+        $now = new \DateTime();
 
         foreach (["Foo", "Bar", "Baz"] as $idx => $name) {
             $i = $idx + 1;
@@ -25,9 +25,6 @@ class NominationFixtures extends Fixture implements DependentFixtureInterface
 
             $nomination->setYesCount($voteCounts[$name]["Y"]);
             $nomination->setNoCount($voteCounts[$name]["N"]);
-
-            $nomination->setCreatedAt($now);
-            $nomination->setUpdatedAt($now);
 
             $this->addReference("nomination-$i", $nomination);
 

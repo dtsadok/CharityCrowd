@@ -42,8 +42,6 @@ class VoteFixtures extends Fixture implements DependentFixtureInterface
                 $vote->setMember($member);
                 $vote->setNomination($nomination);
                 $vote->setValue($value);
-                $now = new \DateTimeImmutable();
-                $vote->setCreatedAt($now);
                 $manager->persist($vote);
             }
         }

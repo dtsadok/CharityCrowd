@@ -25,9 +25,6 @@ class MemberFixtures extends Fixture
             $member->setPassword(
                 $this->passwordEncoder->encodePassword($member, '1234')
             );
-            $now = new \DateTimeImmutable();
-            $member->setCreatedAt($now);
-            $member->setUpdatedAt($now);
             $manager->persist($member);
 
             $this->addReference($nickname, $member);

@@ -90,9 +90,6 @@ dump($nominations);
         $nomination->setMember($member);
         $nomination->setYesCount(0);
         $nomination->setNoCount(0);
-        $now = new \DateTimeImmutable();
-        $nomination->setCreatedAt($now);
-        $nomination->setUpdatedAt($now);
 
         $form = $this->createForm(NominationType::class, $nomination);
         $form->handleRequest($request);

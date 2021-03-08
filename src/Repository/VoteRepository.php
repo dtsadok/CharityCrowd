@@ -27,8 +27,8 @@ class VoteRepository extends ServiceEntityRepository
             "SELECT vote
              FROM App\Entity\Vote vote
              WHERE vote.member = :member
-             AND MONTH(vote.created_at) = :month
-             AND YEAR(vote.created_at) = :year
+             AND MONTH(vote.createdAt) = :month
+             AND YEAR(vote.createdAt) = :year
              ORDER BY vote.id ASC"
         );
 

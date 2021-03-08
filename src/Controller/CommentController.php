@@ -38,9 +38,6 @@ class CommentController extends AbstractController
 
         $comment = new Comment();
         $comment->setMember($member);
-        $now = new \DateTimeImmutable();
-        $comment->setCreatedAt($now);
-        $comment->setUpdatedAt($now);
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
