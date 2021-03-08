@@ -55,8 +55,7 @@ class NominationControllerTest extends WebTestCase
         $this->assertSelectorExists('#nominations tbody tr:nth-child(1) .name');
         $this->assertSelectorTextContains('#nominations tbody tr:nth-child(1) .name', 'Old Nomination');
         $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(1) .name', 'Foo');
-        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(2) .name', 'Bar');
-        $this->assertSelectorTextNotContains('#nominations tbody tr:nth-child(3) .name', 'Baz');
+        $this->assertSelectorNotExists('#nominations tbody tr:nth-child(2) .name'); //should only see one nomination
     }
 
     public function testNominateCharity()
