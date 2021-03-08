@@ -21,7 +21,6 @@ class CommentControllerTest extends WebTestCase
         $member = $memberRepository->findOneByNickname('member-1');
         $client->loginUser($member);
 
-
         $listPage = $client->request('GET', '/nominations/charities');
         $this->assertResponseIsSuccessful();
 
@@ -48,5 +47,16 @@ class CommentControllerTest extends WebTestCase
 
     public function testListCommentsOnNomination()
     {
+        $client = static::createClient();
+
+        $listPage = $client->request('GET', '/nominations/charities');
+        $this->assertResponseIsSuccessful();
+
+        //easier than looking up id from DB
+        $link = $listPage->selectLink('Baz')->link();
+        $showPage = $client->click($link);
+        $this->assertResponseIsSuccessful();
+
+        $this->assertSelectorTextContains('#comments .comment-text', "What a great charity!");
     }
 }
