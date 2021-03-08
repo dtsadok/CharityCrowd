@@ -7,6 +7,7 @@ use App\Entity\Nomination;
 use App\Entity\Vote;
 use App\Form\VoteType;
 use App\Repository\VoteRepository;
+use App\Service\PercentagesCalculator;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class VoteController extends AbstractController
     /**
      * @Route("/", name="vote_new", methods={"POST"})
      */
-    public function new(Request $request, VoteRepository $voteRepository): Response
+    public function new(Request $request, VoteRepository $voteRepository, PercentagesCalculator $percentagesCalculator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -29,8 +30,14 @@ class VoteController extends AbstractController
         $member = $this->getUser();
 
         $voteInfo = $request->request->get('vote');
-        $nomination = $this->getDoctrine()->getRepository(Nomination::class)->findOneBy(["id" => $voteInfo["nomination"]]);
+        $nominationRepository = $this->getDoctrine()->getRepository(Nomination::class);
+        $nomination = $nominationRepository->findOneBy(["id" => $voteInfo["nomination"]]);
         $existingVote = $voteRepository->findOneBy(["member" => $member, "nomination" => $nomination]);
+
+        $now = new \DateTimeImmutable();
+        $monthNumber = $now->format('n');
+        $year = $now->format('Y');
+        $currentNominations = $nominationRepository->findAllForMonth($monthNumber, $year);
 
         if (!$nomination->isCurrent())
         {
@@ -63,6 +70,9 @@ class VoteController extends AbstractController
             $entityManager->flush();
             $existingVote->getNomination()->setVoteCounts($voteRepository);
             $entityManager->persist($existingVote->getNomination());
+
+            $percentagesCalculator->setPercentages($currentNominations, $entityManager);
+
             $entityManager->flush();
             $entityManager->getConnection()->commit();
 
@@ -89,6 +99,7 @@ class VoteController extends AbstractController
                 $entityManager->flush();
 
                 $vote->getNomination()->setVoteCounts($voteRepository);
+                $percentagesCalculator->setPercentages($currentNominations, $entityManager);
                 $entityManager->persist($vote->getNomination());
                 $entityManager->flush();
 

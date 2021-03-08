@@ -6,7 +6,7 @@ use App\Entity\Member;
 
 class PercentagesCalculator
 {
-    public function setPercentages($nominations)
+    public function setPercentages($nominations, $entityManager)
     {
         $totalYesVotes = 0;
         $totalNoVotes = 0;
@@ -39,9 +39,9 @@ class PercentagesCalculator
             {
                 $nomination->setPercentage(0);
             }
-        }
 
-        //print_r($nominations);
+            $entityManager->persist($nomination);
+        }
 
         return $nominations;
     }

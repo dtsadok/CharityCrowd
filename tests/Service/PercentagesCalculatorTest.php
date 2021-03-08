@@ -32,7 +32,7 @@ class PercentagesCalculatorTest extends KernelTestCase
         $nominations = $nominationRepository->findAllForMonth($monthNumber, $year);
 
         $percentagesCalculator = new PercentagesCalculator();
-        $percentagesCalculator->setPercentages($nominations);
+        $percentagesCalculator->setPercentages($nominations, $this->entityManager);
 
         $this->assertEquals(0, $nominations[0]->getPercentage());
         $this->assertEquals(10000, $nominations[1]->getPercentage());
