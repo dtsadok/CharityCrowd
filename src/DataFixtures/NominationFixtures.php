@@ -25,6 +25,7 @@ class NominationFixtures extends Fixture implements DependentFixtureInterface
 
             $nomination->setYesCount($voteCounts[$name]["Y"]);
             $nomination->setNoCount($voteCounts[$name]["N"]);
+            $nomination->setPercentage(0);
 
             $this->addReference("nomination-$i", $nomination);
 
@@ -38,6 +39,7 @@ class NominationFixtures extends Fixture implements DependentFixtureInterface
         $nomination->setName("Old Nomination");
         $nomination->setYesCount(0);
         $nomination->setNoCount(0);
+        $nomination->setPercentage(0);
         $nomination->setCreatedAt($lastMonth);
         $nomination->setUpdatedAt($lastMonth);
         $this->addReference("nomination-4", $nomination);

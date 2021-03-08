@@ -90,6 +90,7 @@ dump($nominations);
         $nomination->setMember($member);
         $nomination->setYesCount(0);
         $nomination->setNoCount(0);
+        $nomination->setPercentage(0);
 
         $form = $this->createForm(NominationType::class, $nomination);
         $form->handleRequest($request);
