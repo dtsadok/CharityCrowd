@@ -9,6 +9,6 @@ class MonthYearService
         $date = \DateTimeImmutable::createFromFormat('d F', "1 $month");
         if (!$date) { $date = new \DateTimeImmutable(); }
 
-        return $date->format('m');
+        return $date->format('n');
     }
 }
