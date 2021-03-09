@@ -1,4 +1,4 @@
-O To do
+^ To do
 * In progress
 + Completed (with tests)
 - Not MVP
@@ -14,17 +14,17 @@ On the nominations page:
 + I can withdraw my vote
 + I can change my vote
 + I can go to the Nominate page
-O I can see the total current monthly allocation
-O I can see the current monthly allocation for each nomination
-* I can see the current percentage allocation for each nomination
-O I can see how many votes I have left for the month
+^ I can see the total current monthly allocation
+^ I can see the current monthly allocation for each nomination
++ I can see the current percentage allocation for each nomination
+- I can see how many votes I have left for the month
 - I can see the nominations I've voted on
-* I can see comments for a nomination
++ I can see comments for a nomination
 + I can comment on a nomination
 
 On the nominate page:
-O I can nominate only one charity every month
-O I automatically vote for my nomination after I nominate it
+- I can nominate only one charity every month
+^ I automatically vote for my nomination after I nominate it
 - I can see a auto-completed list of charities as I type a name
 
 On the charities page:
@@ -32,10 +32,10 @@ On the charities page:
 - I can nominate a charity
 
 On the security page:
-- I can sign up
++ I can sign up
 + I can log in
 + I can log out
-O I can change my password
+* I can change my password
 
 On the member page:
 - I can see a member's real name
