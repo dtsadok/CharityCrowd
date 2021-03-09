@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.nickname) }}
+    {{ form_row(form.password) }}
+
+    <button class="btn">{{ button_label|default('Sign Up') }}</button>
+{{ form_end(form) }}
