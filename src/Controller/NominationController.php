@@ -36,7 +36,7 @@ class NominationController extends AbstractController
 
         $nominations = $nominationRepository->findAllForMonth($monthNumber, $year);
 
-dump($nominations);
+        //dump($nominations);
 
         //generate forms for voting
         $voteForms = [];
@@ -131,6 +131,7 @@ dump($nominations);
     /**
      * @Route("/nomination/{id}/edit", name="nomination_edit", methods={"GET","POST"})
      */
+    /*
     public function edit(Request $request, Nomination $nomination): Response
     {
         $form = $this->createForm(NominationType::class, $nomination);
@@ -147,10 +148,11 @@ dump($nominations);
             'form' => $form->createView(),
         ]);
     }
-
+    */
     /**
      * @Route("/nomination/{id}", name="nomination_delete", methods={"DELETE"})
      */
+    /*
     public function delete(Request $request, Nomination $nomination): Response
     {
         if ($this->isCsrfTokenValid('delete'.$nomination->getId(), $request->request->get('_token'))) {
@@ -161,4 +163,5 @@ dump($nominations);
 
         return $this->redirectToRoute('nomination_index');
     }
+    */
 }

@@ -17,7 +17,6 @@
                 <th>YES</th>
                 <th>NO</th>
                 <th>Allocation</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -46,10 +45,6 @@
                 </td>
                 <td class="allocation">
                     {{ nomination.percentage/100 }}%
-                </td>
-                <td>
-                    <a href="{{ path('nomination_show', {'id': nomination.id}) }}">show</a>
-                    <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
