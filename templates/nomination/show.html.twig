@@ -33,9 +33,5 @@
 
     <nav>
     <a href="{{ path('nomination_index', {'month': nomination.month, 'year': nomination.year}) }}">back to list</a>
-
-    <a href="{{ path('nomination_edit', {'id': nomination.id}) }}">edit</a>
     </nav>
-
-    {{ include('nomination/_delete_form.html.twig') }}
 {% endblock %}
