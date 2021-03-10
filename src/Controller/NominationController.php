@@ -24,7 +24,7 @@ class NominationController extends AbstractController
      */
     public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, VoteRepository $voteRepository, MonthYearService $monthYearService): Response
     {
-        /** @var \App\Entity\Member $user */
+        /** @var \App\Entity\Member $member */
         $member = $this->getUser();
 
         $now = new \DateTimeImmutable();
