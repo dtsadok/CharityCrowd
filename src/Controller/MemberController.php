@@ -42,4 +42,42 @@ class MemberController extends AbstractController
         }
         return $response;
     }
+
+    /**
+     * @Route("/password/change", name="password_change", methods={"GET","POST"})
+     */
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        //with some help from https://penguin-arts.com/how-to-make-change-password-in-symfony/
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var \App\Entity\Member $member */
+        $member = $this->getUser();
+
+        $oldPassword = $request->get('old_password');
+        $newPassword = $request->get('password');
+        $newPassword2 = $request->get('password_confirmation');
+
+        if ($oldPassword && $newPassword == $newPassword2 &&
+            $passwordEncoder->isPasswordValid($member, $oldPassword))
+        {
+            $member->setPassword(
+                $passwordEncoder->encodePassword($member, $newPassword)
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($member);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('nomination_index');
+        }
+        else if ($oldPassword)
+        {
+            $response = new Response("<h1>Either the password was incorrect, or the new passwords don't match.</h1>");
+            $response->setStatusCode(422);
+            return $response;
+        }
+
+        return $this->render('member/change_password.html.twig', []);
+    }
 }

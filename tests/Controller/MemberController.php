@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MemberControllerTest extends WebTestCase
@@ -43,5 +44,29 @@ class MemberControllerTest extends WebTestCase
         ]);
 
         $this->assertResponseStatusCodeSame(422);
+    }
+    public function testChangePassword()
+    {
+        $client = static::createClient();
+
+        $memberRepository = static::$container->get(MemberRepository::class);
+        $member = $memberRepository->findOneByNickname('member-1');
+        $client->loginUser($member);
+
+        $changePasswordPage = $client->request('GET', '/password/change');
+        $this->assertResponseIsSuccessful();
+
+        $changePasswordPage->filter('#change_password');
+        $form = $changePasswordPage->selectButton('Change Password')->form();
+
+        $homePage = $client->submit($form, [
+            'old_password' => '1234',
+            'password' => '4567',
+            'password_confirmation' => '4567',
+        ]);
+
+        $this->assertResponseRedirects('/nominations/charities');
+
+        //TODO: test login with new password
     }
 }
