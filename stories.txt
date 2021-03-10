@@ -24,7 +24,7 @@ On the nominations page:
 
 On the nominate page:
 - I can nominate only one charity every month
-^ I automatically vote for my nomination after I nominate it
+* I automatically vote for my nomination after I nominate it
 - I can see a auto-completed list of charities as I type a name
 
 On the charities page:
@@ -35,7 +35,7 @@ On the security page:
 + I can sign up
 + I can log in
 + I can log out
-* I can change my password
++ I can change my password
 
 On the member page:
 - I can see a member's real name
