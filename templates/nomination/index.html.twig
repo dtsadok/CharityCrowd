@@ -1,19 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Nominations{% endblock %}
+{% block pageId %}nominations{% endblock %}
 
 {% block body %}
     <h1>Nominations</h1>
     <h3>for {{month}} {{year}}</h3>
 
-    <a class="nominate" href="{{ path('nomination_new') }}">Nominate Additional Charity</a>
+    <a class="nominate" href="{{ path('nomination_new') }}">Nominate a Charity</a>
 
     <table id="nominations" class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Pitch</th>
-                <th>Created_at</th>
+                <th class="name">Name</th>
                 <th>YES</th>
                 <th>NO</th>
                 <th>Allocation</th>
@@ -26,9 +25,10 @@
                     <a href="/nomination/{{nomination.id}}">
                         {{ nomination.name }}
                     </a>
+                    <div class="nomination-date">
+                        Nominated {{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i') : '' }}
+                    </div>
                 </td>
-                <td>{{ nomination.pitch }}</td>
-                <td>{{ nomination.createdAt ? nomination.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="yes_votes">
                     {% if nomination.current %}
                         {{ include('nomination/_vote_yes_button.html.twig') }}
@@ -49,7 +49,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td class="empty" colspan="6">No nominations yet!</td>
             </tr>
         {% endfor %}
         </tbody>

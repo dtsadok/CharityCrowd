@@ -1,3 +1,31 @@
+#login-page .form-field label {
+    display: inline-block;
+    width: 5em;
+}
+
+a.nominate {
+    display: table;
+    width: auto;
+    margin: 0 auto 1em;
+    padding: 0.25em 0.5em;
+    border: 2px solid;
+    text-decoration: none;
+}
+
+table#nominations {
+    min-width: 50%;
+    max-width: 100%;
+}
+#nominations th {
+    text-align: left;
+}
+#nominations th.name {
+    min-width: 8em;
+}
+#nominations .empty {
+    text-align: center;
+    font-style: italic;
+}
 input.vote-yes.btn, input.vote-no.btn {
     padding: 0.25em 1em;
     border: 2px solid black;

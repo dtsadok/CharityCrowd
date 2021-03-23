@@ -2,14 +2,22 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Charity Crowd &gt; {% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="/stylesheets/screen.css" />
         {% endblock %}
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body>
+    <body id="{% block pageId %}web{% endblock %}-page">
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <main>
         {% block body %}{% endblock %}
+        </main>
     </body>
 </html>
