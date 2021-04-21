@@ -3,6 +3,10 @@
     width: 5em;
 }
 
+main header {
+    text-align: center;
+}
+
 a.nominate {
     display: table;
     width: auto;
@@ -13,6 +17,7 @@ a.nominate {
 }
 
 table#nominations {
+    margin: auto;
     min-width: 50%;
     max-width: 100%;
 }

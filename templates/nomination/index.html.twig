@@ -4,8 +4,18 @@
 {% block pageId %}nominations{% endblock %}
 
 {% block body %}
-    <h1>Nominations</h1>
-    <h3>for {{month}} {{year}}</h3>
+    <header>
+        <h1>Nominations</h1>
+        <div>
+            for
+            <select id="month">
+                <option SELECTED>{{month}}</option>
+            </select>
+            <select id="year">
+                <option SELECTED>{{year}}</option>
+            </select>
+        </div>
+    </header>
 
     <a class="nominate" href="{{ path('nomination_new') }}">Nominate a Charity</a>
 
@@ -49,7 +59,7 @@
             </tr>
         {% else %}
             <tr>
-                <td class="empty" colspan="6">No nominations yet!</td>
+                <td class="empty" colspan="6">No nominations found for {{ month }} {{ year }}.</td>
             </tr>
         {% endfor %}
         </tbody>
