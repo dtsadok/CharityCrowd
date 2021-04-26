@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+define('MONTHLY_PERCENTAGE', 0.12);
+
 use App\Entity\Comment;
 use App\Entity\Member;
 use App\Entity\Nomination;
@@ -10,6 +12,7 @@ use App\Form\CommentType;
 use App\Form\NominationType;
 use App\Form\VoteType;
 use App\Repository\NominationRepository;
+use App\Repository\TransactionRepository;
 use App\Repository\VoteRepository;
 use App\Service\MonthYearService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +25,7 @@ class NominationController extends AbstractController
     /**
      * @Route("/nominations/charities/{month}/{year}", name="nomination_index", methods={"GET"})
      */
-    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, VoteRepository $voteRepository, MonthYearService $monthYearService): Response
+    public function index(string $month=null, int $year=null, NominationRepository $nominationRepository, TransactionRepository $transactionRepository, VoteRepository $voteRepository, MonthYearService $monthYearService): Response
     {
         /** @var \App\Entity\Member $member */
         $member = $this->getUser();
@@ -35,6 +38,9 @@ class NominationController extends AbstractController
         $monthNumber = $monthYearService->getMonthNumberFromMonthName($month);
 
         $nominations = $nominationRepository->findAllForMonth($monthNumber, $year);
+        $lastTransaction = $transactionRepository->getLastTransaction();
+        $balance = $lastTransaction ? $lastTransaction->getBalanceCents()/100.0 : 0.0;
+        $monthly = $balance * MONTHLY_PERCENTAGE;
 
         //dump($nominations);
 
@@ -69,10 +75,12 @@ class NominationController extends AbstractController
 
         return $this->render('nomination/index.html.twig', [
             'nominations' => $nominations,
+            'month' => $month,
+            'year' => $year,
+            'balance' => $balance,
+            'monthly' => $monthly,
             'voteForms' => $voteForms,
             'memberVotes' => $memberVotes,
-            'month' => $month,
-            'year' => $year
         ]);
     }
 

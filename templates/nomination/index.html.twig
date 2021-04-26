@@ -15,6 +15,8 @@
                 <option SELECTED>{{year}}</option>
             </select>
         </div>
+        <h3>Balance: {{balance|format_currency('USD')}}</h3>
+        <h3>Monthly Distribution: {{monthly|format_currency('USD')}}</h3>
     </header>
 
     <a class="nominate" href="{{ path('nomination_new') }}">Nominate a Charity</a>
@@ -54,7 +56,9 @@
                     {% endif %}
                 </td>
                 <td class="allocation">
-                    {{ nomination.percentage/100 }}%
+                    {# 100% is stored as 10000 #}
+                    {{ (monthly * nomination.percentage/10000)|format_currency('USD') }}
+                    ({{ (nomination.percentage/100)|format_number({max_fraction_digit: 2}) }}%)
                 </td>
             </tr>
         {% else %}
