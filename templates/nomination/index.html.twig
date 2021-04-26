@@ -56,9 +56,8 @@
                     {% endif %}
                 </td>
                 <td class="allocation">
-                    {# 100% is stored as 10000 #}
-                    {{ (monthly * nomination.percentage/10000)|format_currency('USD') }}
-                    ({{ (nomination.percentage/100)|format_number({max_fraction_digit: 2}) }}%)
+                    {{ (monthly * nomination.percentage)|format_currency('USD') }}
+                    ({{ (nomination.percentage)|format_percent_number({max_fraction_digit: 2}) }})
                 </td>
             </tr>
         {% else %}

@@ -32,8 +32,8 @@ class PercentagesCalculator
 
             if ($y > $n)
             {
-                //45.23% is stored as 4523
-                $nomination->setPercentage(10000 * ($y-$n)/($totalYesVotes - $totalNoVotes));
+                //45.23% is stored as 0.4523
+                $nomination->setPercentage(($y-$n)/floatval($totalYesVotes - $totalNoVotes));
             }
             else
             {

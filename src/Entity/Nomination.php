@@ -59,9 +59,8 @@ class Nomination
      */
     private $no_count;
 
-    //45.23% is stored as 4523
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $percentage;
 
@@ -182,12 +181,12 @@ class Nomination
         return $this;
     }
 
-    public function getPercentage(): ?int
+    public function getPercentage(): ?float
     {
         return $this->percentage;
     }
 
-    public function setPercentage(int $percentage): self
+    public function setPercentage(float $percentage): self
     {
         $this->percentage = $percentage;
 

@@ -35,7 +35,7 @@ class PercentagesCalculatorTest extends KernelTestCase
         $percentagesCalculator->setPercentages($nominations, $this->entityManager);
 
         $this->assertEquals(0, $nominations[0]->getPercentage());
-        $this->assertEquals(10000, $nominations[1]->getPercentage());
+        $this->assertEquals(1, $nominations[1]->getPercentage());
         $this->assertEquals(0, $nominations[2]->getPercentage());
     }
 }
