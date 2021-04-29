@@ -13,9 +13,10 @@ On the nominations page:
 + I can vote No on a nomination
 + I can withdraw my vote
 + I can change my vote
+* I can't change votes for previous month
 + I can go to the Nominate page
-^ I can see the total current monthly allocation
-^ I can see the current monthly allocation for each nomination
++ I can see the total current monthly allocation
++ I can see the current monthly allocation for each nomination
 + I can see the current percentage allocation for each nomination
 - I can see how many votes I have left for the month
 - I can see the nominations I've voted on
@@ -24,7 +25,7 @@ On the nominations page:
 
 On the nominate page:
 - I can nominate only one charity every month
-* I automatically vote for my nomination after I nominate it
+* I can't vote for my own nomination
 - I can see a auto-completed list of charities as I type a name
 
 On the charities page:
@@ -32,7 +33,7 @@ On the charities page:
 - I can nominate a charity
 
 On the security page:
-+ I can sign up
+* I can sign up (with invite code)
 + I can log in
 + I can log out
 + I can change my password
