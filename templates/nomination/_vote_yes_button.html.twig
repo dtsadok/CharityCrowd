@@ -7,5 +7,5 @@
            id="vote-{{nomination.id}}-yes"
            class="vote-yes btn {% if nomination.id in memberVotes|keys and memberVotes[nomination.id].value == 'Y' %}voted{%endif%}"
            aria-label="Yes: {{nomination.yesCount}} votes"
-           value="{{ button_label|default(nomination.yesCount) }}" />
+           value="{{ button_label|default(nomination.yesCount|format_number) }}" />
 {{ form_end(voteForms[nomination.id].yes) }}

@@ -7,5 +7,5 @@
            id="vote-{{nomination.id}}-no"
            class="vote-no btn {% if nomination.id in memberVotes|keys and memberVotes[nomination.id].value == 'N' %}voted{%endif%}"
            aria-label="No: {{nomination.noCount}} votes"
-           value="{{ button_label|default(nomination.noCount) }}" />
+           value="{{ button_label|default(nomination.noCount|format_number) }}" />
 {{ form_end(voteForms[nomination.id].no) }}
